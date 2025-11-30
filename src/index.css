@@ -104,6 +104,8 @@ input[type="time"]::-webkit-datetime-edit-ampm-field { display: none; }
 
 .input-field {
   transition: all 0.2s ease;
+  border: 1.5px solid #bcccdc !important; /* navy-200 */
+  background: white;
 }
 .input-field:focus {
   border-color: #06b6d4 !important;
@@ -111,6 +113,7 @@ input[type="time"]::-webkit-datetime-edit-ampm-field { display: none; }
 }
 .dark .input-field {
   background: rgba(30, 41, 59, 0.6);
+  border-color: #486581 !important; /* navy-600 */
   color: #e2e8f0;
 }
 .dark .input-field:focus {
