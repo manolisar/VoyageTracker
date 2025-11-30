@@ -10,10 +10,9 @@ export default defineConfig({
     cssCodeSplit: false,
     rollupOptions: {
       output: {
-        format: 'iife', // Use IIFE instead of ES modules for file:// compatibility
         manualChunks: undefined, // Single JS file
       }
     }
   },
-  base: './', // Use relative paths for assets
+  base: '/VoyageTracker/', // GitHub Pages base path
 })
