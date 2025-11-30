@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
-import { PHASE_TYPES } from '../../constants';
+import { PHASE_TYPES, EQUIPMENT_LABELS } from '../../constants';
 import { Icons } from '../common/Icons';
 import { useToast } from '../../context/ToastContext';
 import { calcConsumption } from '../../utils/calculations';
 import { createPhase } from '../../utils/dataFactory';
 import CounterCarryOverModal from '../modals/CounterCarryOverModal';
 import PhaseSection from '../phase/PhaseSection';
-
-const EQUIPMENT_LABELS = {
-  dg12: 'DG 1-2',
-  dg4: 'DG 4',
-  dg3: 'DG 3',
-  boiler1: 'Boiler 1',
-  boiler2: 'Boiler 2',
-};
 
 const ReportForm = ({ report, onChange, densities }) => {
   const [collapsed, setCollapsed] = useState(false);

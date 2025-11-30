@@ -1,83 +1,74 @@
-import React from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { PHASE_TYPES } from '../../constants';
 import { Icons } from '../common/Icons';
 import { calcConsumption } from '../../utils/calculations';
 import EquipmentRow from './EquipmentRow';
 
-const PhaseSection = ({ phase, onChange, onDelete, canDelete, densities, collapsed, showTotals, cumulativeTotals, onEndBlur }) => {
-  const handleEquipmentChange = (key, value) => {
+const PhaseSection = memo(function PhaseSection({ phase, onChange, onDelete, canDelete, densities, collapsed, showTotals, cumulativeTotals, onEndBlur }) {
+  const handleEquipmentChange = useCallback((key, value) => {
     onChange({ ...phase, equipment: { ...phase.equipment, [key]: value } });
-  };
+  }, [onChange, phase]);
 
-  const handleTitleChange = (e) => {
+  const handleTitleChange = useCallback((e) => {
     onChange({ ...phase, name: e.target.value });
-  };
+  }, [onChange, phase]);
 
-  const handleEndBlur = (equipmentKey, endValue) => {
+  const handleEndBlur = useCallback((equipmentKey, endValue) => {
     if (onEndBlur) {
       onEndBlur(phase.id, equipmentKey, endValue);
     }
-  };
+  }, [onEndBlur, phase.id]);
 
-  // Calculate totals
-  const totals = { HFO: 0, MGO: 0, LSFO: 0 };
-  const engineTotals = { HFO: 0, MGO: 0, LSFO: 0 };
-  const boilerTotals = { HFO: 0, MGO: 0, LSFO: 0 };
+  // Calculate totals - memoized
+  const { engineTotals, boilerTotals } = useMemo(() => {
+    const engineTotals = { HFO: 0, MGO: 0, LSFO: 0 };
+    const boilerTotals = { HFO: 0, MGO: 0, LSFO: 0 };
 
-  Object.entries(phase.equipment).forEach(([key, eq]) => {
-    const cons = calcConsumption(eq.start, eq.end, eq.fuel, densities);
-    if (cons) {
-      totals[eq.fuel] += parseFloat(cons);
-      if (key.startsWith('dg')) {
-        engineTotals[eq.fuel] += parseFloat(cons);
-      } else if (key.startsWith('boiler')) {
-        boilerTotals[eq.fuel] += parseFloat(cons);
+    Object.entries(phase.equipment).forEach(([key, eq]) => {
+      const cons = calcConsumption(eq.start, eq.end, eq.fuel, densities);
+      if (cons) {
+        if (key.startsWith('dg')) {
+          engineTotals[eq.fuel] += parseFloat(cons);
+        } else if (key.startsWith('boiler')) {
+          boilerTotals[eq.fuel] += parseFloat(cons);
+        }
       }
-    }
-  });
+    });
+
+    return { engineTotals, boilerTotals };
+  }, [phase.equipment, densities]);
 
   const displayEngineTotals = cumulativeTotals ? cumulativeTotals.engineCumulative : engineTotals;
   const displayBoilerTotals = cumulativeTotals ? cumulativeTotals.boilerCumulative : boilerTotals;
-  const displayGrandTotal = cumulativeTotals
-    ? cumulativeTotals.cumulative.HFO + cumulativeTotals.cumulative.MGO + cumulativeTotals.cumulative.LSFO
-    : totals.HFO + totals.MGO + totals.LSFO;
 
-  const getPhaseClass = () => {
+  const phaseClass = useMemo(() => {
     if (phase.type === PHASE_TYPES.STANDBY) return 'phase-standby';
     if (phase.type === PHASE_TYPES.SEA) return 'phase-sea';
     return 'phase-port';
-  };
+  }, [phase.type]);
 
-  const getPhaseIcon = () => {
+  const phaseIcon = useMemo(() => {
     if (phase.type === PHASE_TYPES.STANDBY) return '⚓';
     if (phase.type === PHASE_TYPES.SEA) return '🌊';
     return '🏭';
-  };
+  }, [phase.type]);
 
-  const getPhaseLabel = () => {
+  const phaseLabel = useMemo(() => {
     if (phase.type === PHASE_TYPES.STANDBY) return 'STANDBY';
     if (phase.type === PHASE_TYPES.SEA) return 'SEA';
     return 'PORT';
-  };
-
-  const buildFuelString = (totals) => {
-    const parts = [];
-    if (totals.HFO > 0) parts.push(`HFO: ${totals.HFO.toFixed(2)}`);
-    if (totals.MGO > 0) parts.push(`MGO: ${totals.MGO.toFixed(2)}`);
-    if (totals.LSFO > 0) parts.push(`LSFO: ${totals.LSFO.toFixed(2)}`);
-    return parts.length > 0 ? parts.join(' • ') : '0.00';
-  };
+  }, [phase.type]);
 
   const engineTotal = displayEngineTotals.HFO + displayEngineTotals.MGO + displayEngineTotals.LSFO;
   const boilerTotal = displayBoilerTotals.HFO + displayBoilerTotals.MGO + displayBoilerTotals.LSFO;
 
   return (
     <div className="mb-4 phase-card glass-card rounded-xl overflow-hidden animate-fade-in">
-      <div className={`${getPhaseClass()} text-white px-5 py-3 flex justify-between items-center`}>
+      <div className={`${phaseClass} text-white px-5 py-3 flex justify-between items-center`}>
         <div className="flex items-center gap-3 flex-1">
-          <span className="text-lg">{getPhaseIcon()}</span>
+          <span className="text-lg">{phaseIcon}</span>
           <span className="text-xs bg-white/20 px-2.5 py-1 rounded-full font-semibold tracking-wide">
-            {getPhaseLabel()}
+            {phaseLabel}
           </span>
           <input
             type="text"
@@ -197,6 +188,7 @@ const PhaseSection = ({ phase, onChange, onDelete, canDelete, densities, collaps
       )}
     </div>
   );
-};
+});
 
 export default PhaseSection;
+

@@ -33,7 +33,6 @@ function VoyageTracker() {
   const [showNewVoyageModal, setShowNewVoyageModal] = useState(false);
   const [showImportCountersModal, setShowImportCountersModal] = useState(false);
   const [pendingNewCruise, setPendingNewCruise] = useState(null); // Holds new cruise while import modal is open
-  const [pendingVoyageDetails, setPendingVoyageDetails] = useState(null); // Holds voyage details from NewVoyageModal
   const [saveStatus, setSaveStatus] = useState('idle'); // idle, saving, saved, error
   const [directoryHandle, setDirectoryHandle] = useState(null);
   const [allLegsCollapsed, setAllLegsCollapsed] = useState(false);
@@ -228,7 +227,6 @@ function VoyageTracker() {
     if (voyages.length > 0) {
       // Store the new cruise and show import modal
       setPendingNewCruise(newCruise);
-      setPendingVoyageDetails(voyageDetails);
       setShowImportCountersModal(true);
     } else {
       // No previous voyages, just create new cruise
@@ -246,8 +244,7 @@ function VoyageTracker() {
       setActiveFilename(generateFilename(pendingNewCruise));
       setView('edit');
       setPendingNewCruise(null);
-      setPendingVoyageDetails(null);
-      setShowImportCountersModal(false);
+            setShowImportCountersModal(false);
       toast.addToast('New voyage created', 'success');
     }
   };
@@ -281,8 +278,7 @@ function VoyageTracker() {
       setActiveFilename(generateFilename(cruiseWithLeg));
       setView('edit');
       setPendingNewCruise(null);
-      setPendingVoyageDetails(null);
-      setShowImportCountersModal(false);
+            setShowImportCountersModal(false);
 
       const importedCount = Object.keys(countersToImport).length;
       toast.addToast(`Voyage created with ${importedCount} counter${importedCount !== 1 ? 's' : ''} imported`, 'success');
@@ -428,8 +424,7 @@ function VoyageTracker() {
           onClose={() => {
             setShowImportCountersModal(false);
             setPendingNewCruise(null);
-            setPendingVoyageDetails(null);
-          }}
+                      }}
           onStartFresh={handleStartFresh}
           onImport={handleImportCounters}
           lastVoyage={getLastVoyage()}

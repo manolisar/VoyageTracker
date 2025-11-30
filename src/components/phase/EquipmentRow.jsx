@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { FUEL_OPTIONS } from '../../constants';
 import { calcConsumption } from '../../utils/calculations';
 
-const EquipmentRow = ({ label, equipmentKey, data, onChange, onEndBlur, disabled = false, densities }) => {
+const EquipmentRow = memo(function EquipmentRow({ label, equipmentKey, data, onChange, onEndBlur, disabled = false, densities }) {
   const consumption = calcConsumption(data.start, data.end, data.fuel, densities);
   const diff = (data.start && data.end) ? (parseFloat(data.end) - parseFloat(data.start)).toFixed(1) : '—';
 
@@ -57,6 +57,6 @@ const EquipmentRow = ({ label, equipmentKey, data, onChange, onEndBlur, disabled
       </td>
     </tr>
   );
-};
+});
 
 export default EquipmentRow;
