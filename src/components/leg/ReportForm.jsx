@@ -210,21 +210,24 @@ const ReportForm = ({ report, onChange, densities }) => {
                 <input type="date" value={report.date}
                   onClick={(e) => e.stopPropagation()}
                   onChange={(e) => onChange({ ...report, date: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm input-field" />
+                  style={{ border: '1.5px solid #9fb3c8', background: '#fff' }}
+                  className="w-full px-4 py-2.5 rounded-xl text-sm dark:bg-navy-800 dark:border-navy-600" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">Port</label>
                 <input type="text" value={report.port}
                   onClick={(e) => e.stopPropagation()}
                   onChange={(e) => onChange({ ...report, port: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm input-field" placeholder="Singapore" />
+                  style={{ border: '1.5px solid #9fb3c8', background: '#fff' }}
+                  className="w-full px-4 py-2.5 rounded-xl text-sm dark:bg-navy-800 dark:border-navy-600" placeholder="Singapore" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">Engineer</label>
                 <input type="text" value={report.engineer}
                   onClick={(e) => e.stopPropagation()}
                   onChange={(e) => onChange({ ...report, engineer: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm input-field" />
+                  style={{ border: '1.5px solid #9fb3c8', background: '#fff' }}
+                  className="w-full px-4 py-2.5 rounded-xl text-sm dark:bg-navy-800 dark:border-navy-600" />
               </div>
               {isDeparture ? (
                 <div className="grid grid-cols-2 gap-2">
@@ -233,14 +236,16 @@ const ReportForm = ({ report, onChange, densities }) => {
                     <input type="time" value={report.timeEvents.sbe} step="360"
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, sbe: e.target.value }})}
-                      className="w-full px-3 py-2.5 rounded-xl text-sm input-field font-mono" />
+                      style={{ border: '1.5px solid #9fb3c8', background: '#fff' }}
+                      className="w-full px-3 py-2.5 rounded-xl text-sm font-mono dark:bg-navy-800 dark:border-navy-600" />
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">FA</label>
                     <input type="time" value={report.timeEvents.fa} step="360"
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, fa: e.target.value }})}
-                      className="w-full px-3 py-2.5 rounded-xl text-sm input-field font-mono" />
+                      style={{ border: '1.5px solid #9fb3c8', background: '#fff' }}
+                      className="w-full px-3 py-2.5 rounded-xl text-sm font-mono dark:bg-navy-800 dark:border-navy-600" />
                   </div>
                 </div>
               ) : (
@@ -250,14 +255,16 @@ const ReportForm = ({ report, onChange, densities }) => {
                     <input type="time" value={report.timeEvents.sbe} step="360"
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, sbe: e.target.value }})}
-                      className="w-full px-3 py-2.5 rounded-xl text-sm input-field font-mono" />
+                      style={{ border: '1.5px solid #9fb3c8', background: '#fff' }}
+                      className="w-full px-3 py-2.5 rounded-xl text-sm font-mono dark:bg-navy-800 dark:border-navy-600" />
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">FWE</label>
                     <input type="time" value={report.timeEvents.fwe} step="360"
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, fwe: e.target.value }})}
-                      className="w-full px-3 py-2.5 rounded-xl text-sm input-field font-mono" />
+                      style={{ border: '1.5px solid #9fb3c8', background: '#fff' }}
+                      className="w-full px-3 py-2.5 rounded-xl text-sm font-mono dark:bg-navy-800 dark:border-navy-600" />
                   </div>
                 </div>
               )}
