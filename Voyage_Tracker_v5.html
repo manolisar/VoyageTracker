@@ -1,0 +1,3628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voyage Tracker v5 | Celebrity Solstice Engine Department</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            'display': ['Outfit', 'sans-serif'],
+            'body': ['DM Sans', 'sans-serif'],
+            'mono': ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            navy: {
+              50: '#f0f4f8',
+              100: '#d9e2ec',
+              200: '#bcccdc',
+              300: '#9fb3c8',
+              400: '#829ab1',
+              500: '#627d98',
+              600: '#486581',
+              700: '#334e68',
+              800: '#243b53',
+              900: '#102a43',
+              950: '#0a1929',
+            },
+            ocean: {
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+            },
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out',
+            'slide-up': 'slideUp 0.4s ease-out',
+            'slide-down': 'slideDown 0.3s ease-out',
+            'scale-in': 'scaleIn 0.2s ease-out',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'shimmer': 'shimmer 2s linear infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideDown: {
+              '0%': { opacity: '0', transform: 'translateY(-10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            scaleIn: {
+              '0%': { opacity: '0', transform: 'scale(0.95)' },
+              '100%': { opacity: '1', transform: 'scale(1)' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Outfit', sans-serif; }
+    .font-mono, code, pre, input[type="number"], .mono { font-family: 'JetBrains Mono', monospace; }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(100,116,139,0.5); }
+    .dark ::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.2); }
+    .dark ::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.4); }
+    
+    /* Glass morphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .dark .glass {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
+    .dark .glass-card {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Gradient backgrounds */
+    .bg-mesh-light {
+      background-color: #f0f4f8;
+      background-image: 
+        radial-gradient(at 40% 20%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, rgba(251, 191, 36, 0.08) 0px, transparent 50%),
+        radial-gradient(at 80% 50%, rgba(6, 182, 212, 0.1) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.1) 0px, transparent 50%);
+    }
+    .bg-mesh-dark {
+      background-color: #0a1929;
+      background-image: 
+        radial-gradient(at 40% 20%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, rgba(251, 191, 36, 0.05) 0px, transparent 50%),
+        radial-gradient(at 80% 50%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.08) 0px, transparent 50%);
+    }
+    
+    /* Phase headers with glow */
+    .phase-port {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+    }
+    .phase-sea {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
+    }
+    .phase-standby {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+    }
+    
+    .dark .phase-port { box-shadow: 0 4px 30px rgba(59, 130, 246, 0.4); }
+    .dark .phase-sea { box-shadow: 0 4px 30px rgba(6, 182, 212, 0.4); }
+    .dark .phase-standby { box-shadow: 0 4px 30px rgba(245, 158, 11, 0.4); }
+    
+    /* Phase title input */
+    .phase-title-input {
+      background: transparent;
+      border: none;
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .phase-title-input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 4px 10px;
+      margin: -4px -10px;
+    }
+    .phase-title-input::placeholder { color: rgba(255, 255, 255, 0.6); }
+    
+    /* Input styling */
+    input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    input[type="time"] { min-width: 100px; }
+    input[type="time"]::-webkit-datetime-edit-ampm-field { display: none; }
+    
+    .input-field {
+      transition: all 0.2s ease;
+      border: 1.5px solid transparent;
+    }
+    .input-field:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+    }
+    .dark .input-field {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(148, 163, 184, 0.2);
+      color: #e2e8f0;
+    }
+    .dark .input-field:focus {
+      border-color: #22d3ee;
+      box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .dark .modal-overlay { background: rgba(0, 0, 0, 0.7); }
+    
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      margin: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .dark .modal-content {
+      background: #1e293b;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Toast notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .toast {
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideUp 0.3s ease-out;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .toast-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+    .toast-error {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+    .toast-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+    .toast-info {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+    }
+    
+    /* Button hover effects */
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    
+    .btn-secondary {
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+    }
+    
+    /* Status indicator */
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: pulse-slow 2s infinite;
+    }
+    .status-dot.connected { background: #10b981; }
+    .status-dot.disconnected { background: #f59e0b; }
+    .status-dot.error { background: #ef4444; }
+    
+    /* Table hover */
+    .table-row {
+      transition: all 0.15s ease;
+    }
+    .table-row:hover {
+      background: rgba(6, 182, 212, 0.06);
+    }
+    .dark .table-row:hover {
+      background: rgba(6, 182, 212, 0.12);
+    }
+    
+    /* Equipment row zebra stripe */
+    .table-row:nth-child(odd) {
+      background: rgba(0, 0, 0, 0.01);
+    }
+    .dark .table-row:nth-child(odd) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    /* Phase card enhancement */
+    .phase-card {
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+    .phase-card:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+    .dark .phase-card:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Report totals glow effect */
+    .report-totals {
+      position: relative;
+      overflow: hidden;
+    }
+    .report-totals::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    /* Collapsible animation */
+    .collapse-content {
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, opacity 0.2s ease;
+    }
+    
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    /* Voyage card hover */
+    .voyage-card {
+      transition: all 0.25s ease;
+    }
+    .voyage-card:hover {
+      transform: translateX(4px);
+    }
+    
+    /* Shimmer loading effect */
+    .shimmer {
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    
+    /* Recovery mode banner */
+    .recovery-banner {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: #78350f;
+    }
+    
+    /* Section divider */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.3), transparent);
+      margin: 1.5rem 0;
+    }
+    .dark .section-divider {
+      background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+    }
+
+    /* Floating carry-over button - always visible in edit mode */
+    .floating-carryover-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #06b6d4;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #334e68;
+      transition: all 0.2s;
+    }
+    .floating-carryover-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(6, 182, 212, 0.3); }
+    .floating-carryover-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .dark .floating-carryover-btn { background: rgba(30, 41, 59, 0.95); color: #e2e8f0; border-color: #0891b2; }
+    .carryover-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 8px; color: white; font-size: 14px; font-weight: bold; }
+    .carryover-source { font-size: 0.75rem; color: #627d98; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dark .carryover-source { color: #94a3b8; }
+  </style>
+</head>
+
+<body class="bg-mesh-light dark:bg-mesh-dark min-h-screen transition-colors duration-300">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback, createContext, useContext } = React;
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CONSTANTS & DEFAULTS
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const APP_VERSION = '5.0.0';
+    const BACKUP_DB_NAME = 'VoyageTrackerBackup';
+    const BACKUP_STORE_NAME = 'cruises';
+    const AUTO_SAVE_DELAY = 1000;
+    const BACKUP_INTERVAL = 30000; // 30 seconds
+    
+    const DEFAULT_DENSITIES = {
+      HFO: 0.92,
+      MGO: 0.83,
+      LSFO: 0.92,
+    };
+
+    const FUEL_OPTIONS = ['HFO', 'MGO', 'LSFO'];
+
+    const PHASE_TYPES = {
+      PORT: 'port',
+      SEA: 'sea',
+      STANDBY: 'standby',
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CONTEXT PROVIDERS
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const ThemeContext = createContext();
+    const ToastContext = createContext();
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // TOAST SYSTEM
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const ToastProvider = ({ children }) => {
+      const [toasts, setToasts] = useState([]);
+
+      const addToast = useCallback((message, type = 'info', duration = 4000) => {
+        const id = Date.now() + Math.random();
+        setToasts(prev => [...prev, { id, message, type }]);
+        
+        setTimeout(() => {
+          setToasts(prev => prev.filter(t => t.id !== id));
+        }, duration);
+      }, []);
+
+      const removeToast = useCallback((id) => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+      }, []);
+
+      return (
+        <ToastContext.Provider value={{ addToast }}>
+          {children}
+          <div className="toast-container">
+            {toasts.map(toast => (
+              <div 
+                key={toast.id} 
+                className={`toast toast-${toast.type}`}
+                onClick={() => removeToast(toast.id)}
+              >
+                {toast.type === 'success' && <span>✓</span>}
+                {toast.type === 'error' && <span>✕</span>}
+                {toast.type === 'warning' && <span>⚠️</span>}
+                {toast.type === 'info' && <span>ℹ</span>}
+                {toast.message}
+              </div>
+            ))}
+          </div>
+        </ToastContext.Provider>
+      );
+    };
+
+    const useToast = () => useContext(ToastContext);
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // INDEXEDDB BACKUP SYSTEM
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const openBackupDB = () => {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(BACKUP_DB_NAME, 1);
+        
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+        
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          if (!db.objectStoreNames.contains(BACKUP_STORE_NAME)) {
+            const store = db.createObjectStore(BACKUP_STORE_NAME, { keyPath: 'id' });
+            store.createIndex('lastModified', 'lastModified', { unique: false });
+          }
+        };
+      });
+    };
+
+    const saveToBackup = async (cruise) => {
+      try {
+        const db = await openBackupDB();
+        const tx = db.transaction(BACKUP_STORE_NAME, 'readwrite');
+        const store = tx.objectStore(BACKUP_STORE_NAME);
+        
+        const backupData = {
+          ...cruise,
+          lastModified: new Date().toISOString(),
+          version: APP_VERSION,
+        };
+        
+        store.put(backupData);
+        await tx.complete;
+        db.close();
+        return true;
+      } catch (err) {
+        console.error('Backup failed:', err);
+        return false;
+      }
+    };
+
+    const loadFromBackup = async (id) => {
+      try {
+        const db = await openBackupDB();
+        const tx = db.transaction(BACKUP_STORE_NAME, 'readonly');
+        const store = tx.objectStore(BACKUP_STORE_NAME);
+        
+        return new Promise((resolve, reject) => {
+          const request = store.get(id);
+          request.onsuccess = () => {
+            db.close();
+            resolve(request.result);
+          };
+          request.onerror = () => {
+            db.close();
+            reject(request.error);
+          };
+        });
+      } catch (err) {
+        console.error('Load backup failed:', err);
+        return null;
+      }
+    };
+
+    const getAllBackups = async () => {
+      try {
+        const db = await openBackupDB();
+        const tx = db.transaction(BACKUP_STORE_NAME, 'readonly');
+        const store = tx.objectStore(BACKUP_STORE_NAME);
+        
+        return new Promise((resolve, reject) => {
+          const request = store.getAll();
+          request.onsuccess = () => {
+            db.close();
+            resolve(request.result || []);
+          };
+          request.onerror = () => {
+            db.close();
+            reject(request.error);
+          };
+        });
+      } catch (err) {
+        console.error('Get backups failed:', err);
+        return [];
+      }
+    };
+
+    const deleteBackup = async (id) => {
+      try {
+        const db = await openBackupDB();
+        const tx = db.transaction(BACKUP_STORE_NAME, 'readwrite');
+        const store = tx.objectStore(BACKUP_STORE_NAME);
+        store.delete(id);
+        await tx.complete;
+        db.close();
+        return true;
+      } catch (err) {
+        console.error('Delete backup failed:', err);
+        return false;
+      }
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // DATA VALIDATION
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const validateCruiseData = (data) => {
+      const errors = [];
+      
+      if (!data || typeof data !== 'object') {
+        errors.push('Invalid data format');
+        return { valid: false, errors, data: null };
+      }
+      
+      // Required fields
+      if (!data.id) errors.push('Missing cruise ID');
+      if (!Array.isArray(data.legs)) errors.push('Invalid legs array');
+      
+      // Validate densities
+      if (data.densities) {
+        for (const [fuel, density] of Object.entries(data.densities)) {
+          const d = parseFloat(density);
+          if (isNaN(d) || d <= 0 || d > 2) {
+            errors.push(`Invalid ${fuel} density: ${density}`);
+          }
+        }
+      }
+      
+      // Auto-fix missing fields
+      const fixed = {
+        id: data.id || Date.now(),
+        name: data.name || '',
+        vessel: data.vessel || 'Celebrity Solstice',
+        startDate: data.startDate || '',
+        endDate: data.endDate || '',
+        legs: Array.isArray(data.legs) ? data.legs : [],
+        densities: { ...DEFAULT_DENSITIES, ...(data.densities || {}) },
+        voyageEnd: data.voyageEnd || null,
+        lastModified: data.lastModified || new Date().toISOString(),
+        version: APP_VERSION,
+        filename: data.filename || null, // Preserve existing filename
+      };
+      
+      return {
+        valid: errors.length === 0,
+        errors,
+        data: fixed,
+      };
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // DATA FACTORY FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const defaultEquipment = () => ({
+      dg12: { start: '', end: '', fuel: 'HFO' },
+      dg4: { start: '', end: '', fuel: 'HFO' },
+      dg3: { start: '', end: '', fuel: 'MGO' },
+      boiler1: { start: '', end: '', fuel: 'MGO' },
+      boiler2: { start: '', end: '', fuel: 'MGO' },
+    });
+
+    const createPhase = (type, name = '') => ({
+      id: Date.now() + Math.random(),
+      type: type,
+      name: name,
+      equipment: defaultEquipment(),
+      remarks: '',
+    });
+
+    const defaultDeparturePhases = () => [
+      createPhase(PHASE_TYPES.PORT, 'FWE → SBE (In Port)'),
+      createPhase(PHASE_TYPES.STANDBY, 'SBE → FA (Stand By Departure)'),
+    ];
+
+    const defaultArrivalPhases = () => [
+      createPhase(PHASE_TYPES.SEA, 'FA → SBE (Sea Passage)'),
+      createPhase(PHASE_TYPES.STANDBY, 'SBE → FWE (Stand By Arrival)'),
+    ];
+
+    const defaultReport = (type) => ({
+      id: Date.now() + Math.random(),
+      type,
+      date: '',
+      port: '',
+      timeEvents: { sbe: '', fwe: '', fa: '' },
+      phases: type === 'departure' ? defaultDeparturePhases() : defaultArrivalPhases(),
+      rob: { hfo: '', mgo: '', lsfo: '' },
+      bunkered: { hfo: '', mgo: '', lsfo: '' },
+      freshWater: { rob: '', bunkered: '', production: '', consumption: '' },
+      aep: { openLoopHrs: '', closedLoopHrs: '', alkaliCons: '', alkaliRob: '' },
+      lubeOil: { meCons: '', lo13s14s: '', usedLo13c: '' },
+      engineer: '',
+    });
+
+    const defaultCruise = () => {
+      const id = Date.now();
+      const date = new Date().toISOString().split('T')[0];
+      return {
+        id,
+        name: '',
+        vessel: 'Celebrity Solstice',
+        startDate: '',
+        endDate: '',
+        legs: [],
+        densities: { ...DEFAULT_DENSITIES },
+        voyageEnd: null,
+        lastModified: new Date().toISOString(),
+        version: APP_VERSION,
+        filename: `${date}_voyage_${id}.json`, // Stable filename assigned at creation
+      };
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CALCULATION FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const calcConsumption = (start, end, fuel, densities) => {
+      if (!start || !end || start === '' || end === '') return null;
+      const diffM3 = parseFloat(end) - parseFloat(start);
+      if (isNaN(diffM3) || diffM3 < 0) return null;
+      
+      const density = densities[fuel] || DEFAULT_DENSITIES[fuel];
+      const mt = diffM3 * density; // m³ × density (t/m³) = MT
+      return mt.toFixed(2);
+    };
+
+    const calcCruiseTotal = (cruise) => {
+      let total = 0;
+      const cruiseDensities = cruise.densities || DEFAULT_DENSITIES;
+      cruise.legs.forEach(leg => {
+        [leg.departure, leg.arrival].forEach(report => {
+          if (!report) return;
+          report.phases.forEach((phase) => {
+            Object.values(phase.equipment).forEach(eq => {
+              const cons = calcConsumption(eq.start, eq.end, eq.fuel, cruiseDensities);
+              if (cons) total += parseFloat(cons);
+            });
+          });
+        });
+      });
+      return total;
+    };
+
+    // Generate filename - uses stored filename if available, otherwise creates from ID
+    const generateFilename = (cruise) => {
+      // If cruise already has a stable filename stored, keep using it
+      if (cruise.filename) {
+        return cruise.filename;
+      }
+      
+      const date = cruise.startDate || new Date().toISOString().split('T')[0];
+      
+      // Use cruise name if available, otherwise fall back to ID
+      if (cruise.name && cruise.name.trim() !== '') {
+        const safeName = cruise.name.replace(/[^a-z0-9]/gi, '_');
+        return `${date}_${safeName}.json`;
+      }
+      
+      // Fallback to ID-based filename for unnamed cruises
+      return `${date}_voyage_${cruise.id}.json`;
+    };
+    
+    // Generate display-friendly filename for UI (can change freely)
+    const generateDisplayFilename = (cruise) => {
+      const date = cruise.startDate || new Date().toISOString().split('T')[0];
+      const name = cruise.name || 'Unnamed_Cruise';
+      const safeName = name.replace(/[^a-z0-9]/gi, '_').substring(0, 50);
+      return `${date}_${safeName}.json`;
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ICON COMPONENTS
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const Icons = {
+      Sun: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      ),
+      Moon: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      ),
+      Ship: () => (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        </svg>
+      ),
+      Folder: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+        </svg>
+      ),
+      Save: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+        </svg>
+      ),
+      Settings: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      Plus: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        </svg>
+      ),
+      Trash: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+      ),
+      ChevronDown: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      ),
+      ChevronRight: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      ),
+      Flag: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+        </svg>
+      ),
+      Edit: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+      ),
+      Anchor: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8V4m0 4a4 4 0 100 8 4 4 0 000-8zm0 8v4m-4-4h8M6 12H4m16 0h-2" />
+        </svg>
+      ),
+      ArrowRight: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      ),
+      Check: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+      ),
+      X: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      ),
+      Clock: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      Database: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+        </svg>
+      ),
+      Refresh: () => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+      ),
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // THEME TOGGLE
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const ThemeToggle = () => {
+      const [dark, setDark] = useState(() => {
+        if (typeof window !== 'undefined') {
+          const saved = localStorage.getItem('voyageTrackerTheme');
+          if (saved) return saved === 'dark';
+          return window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+        return false;
+      });
+
+      useEffect(() => {
+        if (dark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        localStorage.setItem('voyageTrackerTheme', dark ? 'dark' : 'light');
+      }, [dark]);
+
+      return (
+        <button
+          onClick={() => setDark(!dark)}
+          className="p-2 rounded-xl bg-white/50 dark:bg-navy-800/50 hover:bg-white dark:hover:bg-navy-700 
+                     text-navy-600 dark:text-navy-200 transition-all duration-200 border border-navy-200/50 dark:border-navy-600/50"
+          title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {dark ? <Icons.Sun /> : <Icons.Moon />}
+        </button>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CONFIRMATION MODAL
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, confirmText = 'Confirm', danger = false }) => {
+      if (!isOpen) return null;
+      
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content w-full max-w-md animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="p-6">
+              <h3 className="text-xl font-display font-bold text-navy-900 dark:text-white mb-2">{title}</h3>
+              <p className="text-navy-600 dark:text-navy-300 mb-6">{message}</p>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={onClose}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-navy-100 dark:bg-navy-700 text-navy-700 dark:text-navy-200 
+                             font-medium hover:bg-navy-200 dark:hover:bg-navy-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => { onConfirm(); onClose(); }}
+                  className={`flex-1 px-4 py-2.5 rounded-xl font-medium transition-all
+                    ${danger 
+                      ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white' 
+                      : 'btn-primary text-white'}`}
+                >
+                  {confirmText}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // COUNTER CARRY-OVER MODAL
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const CounterCarryOverModal = ({ isOpen, onClose, onConfirm, equipmentLabel, prevEnd, currentStart }) => {
+      if (!isOpen) return null;
+      
+      const formatNumber = (num) => parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content w-full max-w-md animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-6 py-4 rounded-t-2xl">
+              <h3 className="text-lg font-display font-bold">Update Counter Start?</h3>
+              <p className="text-sm text-white/80">Counter carry-over detected</p>
+            </div>
+            
+            <div className="p-6 dark:bg-navy-800">
+              <div className="mb-4">
+                <div className="text-sm font-semibold text-navy-700 dark:text-navy-200 mb-3">Equipment: <span className="text-ocean-600 dark:text-ocean-400">{equipmentLabel}</span></div>
+                
+                <div className="bg-navy-50 dark:bg-navy-900 rounded-xl p-4 space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-navy-500 dark:text-navy-400">Previous End:</span>
+                    <span className="font-mono font-bold text-navy-800 dark:text-white">{formatNumber(prevEnd)} m³</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-navy-500 dark:text-navy-400">Current Start:</span>
+                    <span className="font-mono font-bold text-gold-600 dark:text-gold-400">{formatNumber(currentStart)} m³</span>
+                  </div>
+                  <div className="border-t border-navy-200 dark:border-navy-700 pt-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-navy-500 dark:text-navy-400">Difference:</span>
+                      <span className="font-mono font-semibold text-red-500">{formatNumber(Math.abs(parseFloat(prevEnd) - parseFloat(currentStart)))} m³</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={onClose}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-navy-100 dark:bg-navy-700 text-navy-700 dark:text-navy-200 
+                             font-medium hover:bg-navy-200 dark:hover:bg-navy-600 transition-colors"
+                >
+                  Keep Current
+                </button>
+                <button
+                  onClick={() => { onConfirm(); onClose(); }}
+                  className="flex-1 px-4 py-2.5 rounded-xl font-medium transition-all btn-primary text-white"
+                >
+                  Update to {formatNumber(prevEnd)}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SETTINGS MODAL
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MANUAL CARRY-OVER COMPONENTS  
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const ManualCarryOverModal = ({ isOpen, onClose, onConfirm, sourceInfo, targetInfo }) => {
+      const [selected, setSelected] = useState({ dg12: true, dg4: true, dg3: true, boiler1: true, boiler2: true });
+      
+      useEffect(() => {
+        if (isOpen) setSelected({ dg12: true, dg4: true, dg3: true, boiler1: true, boiler2: true });
+      }, [isOpen]);
+      
+      if (!isOpen || !sourceInfo || !targetInfo) return null;
+      
+      const equipmentList = [
+        { key: 'dg12', label: 'DG 1-2' }, { key: 'dg4', label: 'DG 4' }, { key: 'dg3', label: 'DG 3' },
+        { key: 'boiler1', label: 'Boiler 1' }, { key: 'boiler2', label: 'Boiler 2' },
+      ];
+      
+      const handleConfirm = () => {
+        const result = {};
+        Object.entries(selected).forEach(([key, isSelected]) => {
+          if (isSelected && sourceInfo.equipment[key]) result[key] = sourceInfo.equipment[key];
+        });
+        onConfirm(result);
+      };
+      
+      const hasValidSelection = Object.entries(sourceInfo.equipment).some(([k, v]) => v && v !== '' && selected[k]);
+      
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content w-full max-w-lg animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-6 py-4 rounded-t-2xl">
+              <h3 className="text-lg font-display font-bold">Carry Over Counters</h3>
+              <p className="text-sm text-white/80">Copy END values to next phase START</p>
+            </div>
+            <div className="p-6 dark:bg-navy-800">
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3 border border-blue-200 dark:border-blue-800">
+                  <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase mb-1">From (END)</div>
+                  <div className="text-sm font-medium text-navy-800 dark:text-white truncate">{sourceInfo.phaseName}</div>
+                </div>
+                <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-3 border border-green-200 dark:border-green-800">
+                  <div className="text-xs font-semibold text-green-600 dark:text-green-400 uppercase mb-1">To (START)</div>
+                  <div className="text-sm font-medium text-navy-800 dark:text-white truncate">{targetInfo.phaseName}</div>
+                </div>
+              </div>
+              <div className="space-y-2 mb-4">
+                {equipmentList.map(({ key, label }) => {
+                  const val = sourceInfo.equipment[key];
+                  const hasVal = val && val !== '';
+                  return (
+                    <div key={key} onClick={() => hasVal && setSelected(p => ({...p, [key]: !p[key]}))}
+                      className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all cursor-pointer
+                        ${!hasVal ? 'opacity-40 cursor-not-allowed border-navy-200 dark:border-navy-700' : 
+                          selected[key] ? 'bg-ocean-50 dark:bg-ocean-900/20 border-ocean-400 dark:border-ocean-600' : 
+                          'border-navy-200 dark:border-navy-700 hover:border-navy-300'}`}>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-5 h-5 rounded flex items-center justify-center text-xs font-bold
+                          ${selected[key] && hasVal ? 'bg-ocean-500 text-white' : 'bg-navy-200 dark:bg-navy-600'}`}>
+                          {selected[key] && hasVal && '✓'}
+                        </div>
+                        <span className="font-medium text-navy-800 dark:text-white">{label}</span>
+                      </div>
+                      <span className="font-mono text-sm text-navy-600 dark:text-navy-300">{hasVal ? parseFloat(val).toFixed(1) + ' m\u00b3' : '—'}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex gap-3">
+                <button onClick={onClose} className="flex-1 px-4 py-2.5 rounded-xl bg-navy-100 dark:bg-navy-700 text-navy-700 dark:text-navy-200 font-medium hover:bg-navy-200 dark:hover:bg-navy-600 transition-colors">Cancel</button>
+                <button onClick={handleConfirm} disabled={!hasValidSelection} className={`flex-1 px-4 py-2.5 rounded-xl font-medium transition-colors ${hasValidSelection ? 'btn-primary text-white' : 'bg-navy-200 dark:bg-navy-700 text-navy-400 cursor-not-allowed'}`}>Carry Over</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const FloatingCarryOverButton = ({ onClick, disabled, sourceInfo }) => (
+      <button 
+        className="floating-carryover-btn" 
+        onClick={onClick} 
+        disabled={disabled}
+        title={disabled ? 'Edit END values in any phase first' : 'Carry over to next phase'}
+      >
+        <span className="carryover-icon">↓</span>
+        <div className="flex flex-col items-start">
+          <span className="font-semibold">Carry Over</span>
+          {sourceInfo ? (
+            <span className="carryover-source">from: {sourceInfo.phaseName}</span>
+          ) : (
+            <span className="carryover-source">edit END values first</span>
+          )}
+        </div>
+      </button>
+    );
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SETTINGS MODAL
+    // ═══════════════════════════════════════════════════════════════════════════
+    const SettingsModal = ({ isOpen, onClose, densities, onSave }) => {
+      const [localDensities, setLocalDensities] = useState(densities);
+      const toast = useToast();
+
+      useEffect(() => {
+        setLocalDensities(densities);
+      }, [densities]);
+
+      if (!isOpen) return null;
+
+      const handleSave = () => {
+        onSave(localDensities);
+        toast.addToast('Densities updated', 'success');
+        onClose();
+      };
+
+      const handleReset = () => {
+        setLocalDensities(DEFAULT_DENSITIES);
+        toast.addToast('Reset to defaults', 'info');
+      };
+
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content w-full max-w-lg animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-6 py-5 rounded-t-2xl">
+              <div className="flex items-center gap-3">
+                <Icons.Settings />
+                <div>
+                  <h2 className="text-xl font-display font-bold">Density Settings</h2>
+                  <p className="text-sm text-white/80">Fuel densities @ 30°C</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-5">
+              <div className="bg-gold-50 dark:bg-gold-900/20 border border-gold-200 dark:border-gold-800/50 rounded-xl p-4 text-sm text-gold-800 dark:text-gold-200">
+                <strong>Note:</strong> These densities apply to ALL legs in this cruise. Counter readings are in m³, calculations convert to MT.
+              </div>
+
+              {Object.keys(localDensities).map(fuel => (
+                <div key={fuel}>
+                  <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">
+                    {fuel} Density (t/m³)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.001"
+                    value={localDensities[fuel]}
+                    onChange={(e) => setLocalDensities({ ...localDensities, [fuel]: parseFloat(e.target.value) || 0 })}
+                    className="w-full px-4 py-3 bg-navy-50 dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                               rounded-xl font-mono text-lg input-field"
+                  />
+                </div>
+              ))}
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={handleSave}
+                  className="flex-1 px-6 py-3 btn-primary text-white rounded-xl font-semibold flex items-center justify-center gap-2"
+                >
+                  <Icons.Check /> Save Settings
+                </button>
+                <button
+                  onClick={handleReset}
+                  className="px-6 py-3 bg-navy-100 dark:bg-navy-700 hover:bg-navy-200 dark:hover:bg-navy-600 
+                             text-navy-700 dark:text-navy-200 rounded-xl font-semibold transition-colors"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // VOYAGE END MODAL
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const VoyageEndModal = ({ cruise, onClose, onSave, densities }) => {
+      const [lubeOilCons, setLubeOilCons] = useState(cruise.voyageEnd?.lubeOilCons || '');
+      const [lubeOilROB, setLubeOilROB] = useState(cruise.voyageEnd?.lubeOilROB || '');
+      const [engineer, setEngineer] = useState(cruise.voyageEnd?.engineer || '');
+      const [notes, setNotes] = useState(cruise.voyageEnd?.notes || '');
+      const toast = useToast();
+
+      // Calculate totals
+      let totalHFO = 0, totalMGO = 0, totalLSFO = 0;
+      let totalFWProd = 0, totalFWCons = 0, totalFWBunkered = 0;
+      let totalOpenLoop = 0, totalClosedLoop = 0;
+      let totalNaOHCons = 0;
+
+      cruise.legs.forEach(leg => {
+        [leg.departure, leg.arrival].forEach(report => {
+          if (!report) return;
+          report.phases.forEach((phase) => {
+            Object.values(phase.equipment).forEach(eq => {
+              const cons = calcConsumption(eq.start, eq.end, eq.fuel, densities);
+              if (cons) {
+                if (eq.fuel === 'HFO') totalHFO += parseFloat(cons);
+                else if (eq.fuel === 'MGO') totalMGO += parseFloat(cons);
+                else totalLSFO += parseFloat(cons);
+              }
+            });
+          });
+          
+          if (report.type === 'arrival') {
+            if (report.freshWater.production) totalFWProd += parseFloat(report.freshWater.production);
+            if (report.freshWater.consumption) totalFWCons += parseFloat(report.freshWater.consumption);
+            if (report.freshWater.bunkered) totalFWBunkered += parseFloat(report.freshWater.bunkered);
+            
+            if (report.aep.openLoopHrs) {
+              const parts = report.aep.openLoopHrs.split(':');
+              if (parts.length === 2) {
+                totalOpenLoop += parseInt(parts[0]) + parseInt(parts[1]) / 60;
+              }
+            }
+            if (report.aep.closedLoopHrs) {
+              const parts = report.aep.closedLoopHrs.split(':');
+              if (parts.length === 2) {
+                totalClosedLoop += parseInt(parts[0]) + parseInt(parts[1]) / 60;
+              }
+            }
+            
+            if (report.aep.alkaliCons) {
+              totalNaOHCons += parseFloat(report.aep.alkaliCons);
+            }
+          }
+        });
+      });
+
+      const handleSave = () => {
+        const voyageEndData = {
+          timestamp: new Date().toISOString(),
+          lubeOilCons,
+          lubeOilROB,
+          engineer,
+          notes,
+          totals: {
+            hfo: totalHFO,
+            mgo: totalMGO,
+            lsfo: totalLSFO,
+            fwProd: totalFWProd,
+            fwCons: totalFWCons,
+            fwBunkered: totalFWBunkered,
+            openLoop: totalOpenLoop,
+            closedLoop: totalClosedLoop,
+            naohCons: totalNaOHCons,
+          }
+        };
+        onSave(voyageEndData);
+        toast.addToast('Voyage completed successfully!', 'success');
+      };
+
+      const totalFuel = totalHFO + totalMGO + totalLSFO;
+
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content w-full max-w-3xl animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-5 rounded-t-2xl">
+              <div className="flex items-center gap-3">
+                <Icons.Flag />
+                <div>
+                  <h2 className="text-xl font-display font-bold">Voyage End Summary</h2>
+                  <p className="text-sm text-white/80">{cruise.name} • {cruise.vessel}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-6 dark:bg-navy-800">
+              {/* Fuel Totals */}
+              <div className="bg-navy-50 dark:bg-navy-900/50 rounded-2xl p-5">
+                <h3 className="font-display font-semibold text-navy-700 dark:text-navy-200 mb-4">Total Fuel Consumption</h3>
+                <div className="grid grid-cols-4 gap-4">
+                  {[
+                    { label: 'HFO', value: totalHFO, color: 'from-amber-500 to-amber-600' },
+                    { label: 'MGO', value: totalMGO, color: 'from-emerald-500 to-emerald-600' },
+                    { label: 'LSFO', value: totalLSFO, color: 'from-blue-500 to-blue-600' },
+                    { label: 'Total', value: totalFuel, color: 'from-ocean-500 to-ocean-600' },
+                  ].map(item => (
+                    <div key={item.label} className={`bg-gradient-to-br ${item.color} rounded-xl p-4 text-center text-white`}>
+                      <div className="text-2xl font-display font-bold">{item.value.toFixed(2)}</div>
+                      <div className="text-xs opacity-80">{item.label} (MT)</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Engine Lub-Oil Input */}
+              <div className="bg-gold-50 dark:bg-gold-900/20 border border-gold-200 dark:border-gold-800/50 rounded-xl p-5">
+                <h3 className="text-sm font-semibold text-navy-700 dark:text-navy-200 mb-3">🛢️ Engine Lub-Oil (Liters)</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-navy-500 dark:text-navy-400 mb-1">Consumption *</label>
+                    <input
+                      type="number"
+                      step="1"
+                      value={lubeOilCons}
+                      onChange={(e) => setLubeOilCons(e.target.value)}
+                      className="w-full px-4 py-3 bg-white dark:bg-navy-800 border border-gold-300 dark:border-gold-700 
+                                 rounded-xl font-mono text-lg input-field"
+                      placeholder="0"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-navy-500 dark:text-navy-400 mb-1">R.O.B.</label>
+                    <input
+                      type="number"
+                      step="1"
+                      value={lubeOilROB}
+                      onChange={(e) => setLubeOilROB(e.target.value)}
+                      className="w-full px-4 py-3 bg-white dark:bg-navy-800 border border-gold-300 dark:border-gold-700 
+                                 rounded-xl font-mono text-lg input-field"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* NaOH and Fresh Water */}
+              <div className="grid grid-cols-2 gap-5">
+                <div className="bg-navy-50 dark:bg-navy-900/50 rounded-xl p-4">
+                  <h3 className="font-semibold text-navy-700 dark:text-navy-200 mb-3">NaOH Consumption</h3>
+                  <div className="bg-white dark:bg-navy-800 rounded-xl p-4 text-center">
+                    <div className="text-3xl font-display font-bold text-navy-800 dark:text-white">{totalNaOHCons.toFixed(1)}</div>
+                    <div className="text-sm text-navy-500 dark:text-navy-400">Total (Liters)</div>
+                  </div>
+                </div>
+
+                <div className="bg-navy-50 dark:bg-navy-900/50 rounded-xl p-4">
+                  <h3 className="font-semibold text-navy-700 dark:text-navy-200 mb-3">Fresh Water</h3>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { label: 'Bunkered', value: totalFWBunkered },
+                      { label: 'Prod.', value: totalFWProd },
+                      { label: 'Cons.', value: totalFWCons },
+                    ].map(item => (
+                      <div key={item.label} className="bg-white dark:bg-navy-800 rounded-lg p-3 text-center">
+                        <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{item.value.toFixed(1)}</div>
+                        <div className="text-xs text-navy-500 dark:text-navy-400">{item.label} (MT)</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* AEP Hours */}
+              <div className="bg-navy-50 dark:bg-navy-900/50 rounded-xl p-4">
+                <h3 className="font-semibold text-navy-700 dark:text-navy-200 mb-3">AEP Operating Hours</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { label: 'Open Loop', value: totalOpenLoop },
+                    { label: 'Closed Loop', value: totalClosedLoop },
+                  ].map(item => (
+                    <div key={item.label} className="bg-white dark:bg-navy-800 rounded-xl p-4 text-center">
+                      <div className="text-2xl font-display font-bold text-navy-800 dark:text-white">{item.value.toFixed(1)}</div>
+                      <div className="text-sm text-navy-500 dark:text-navy-400">{item.label} (hrs)</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Engineer & Notes */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">
+                    Chief Engineer / Signature
+                  </label>
+                  <input
+                    type="text"
+                    value={engineer}
+                    onChange={(e) => setEngineer(e.target.value)}
+                    className="w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                               rounded-xl input-field"
+                    placeholder="Enter name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">
+                    Notes / Remarks
+                  </label>
+                  <textarea
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    rows="3"
+                    className="w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                               rounded-xl input-field resize-none"
+                    placeholder="Additional notes or remarks..."
+                  />
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={handleSave}
+                  className="flex-1 px-6 py-3.5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 
+                             text-white rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/25"
+                >
+                  <Icons.Check /> Complete Voyage
+                </button>
+                <button
+                  onClick={onClose}
+                  className="px-6 py-3.5 bg-navy-100 dark:bg-navy-700 hover:bg-navy-200 dark:hover:bg-navy-600 
+                             text-navy-700 dark:text-navy-200 rounded-xl font-semibold transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // NEW VOYAGE MODAL
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const NewVoyageModal = ({ isOpen, onClose, onCreate }) => {
+      const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+      const [fromPort, setFromPort] = useState('');
+      const [toPort, setToPort] = useState('');
+      
+      // Reset form when modal opens
+      useEffect(() => {
+        if (isOpen) {
+          setStartDate(new Date().toISOString().split('T')[0]);
+          setFromPort('');
+          setToPort('');
+        }
+      }, [isOpen]);
+      
+      if (!isOpen) return null;
+      
+      const voyageName = fromPort && toPort ? `${fromPort} to ${toPort}` : '';
+      const canCreate = startDate && fromPort.trim() && toPort.trim();
+      
+      const handleCreate = () => {
+        if (canCreate) {
+          onCreate({
+            startDate,
+            name: voyageName,
+            fromPort: fromPort.trim(),
+            toPort: toPort.trim(),
+          });
+        }
+      };
+      
+      const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && canCreate) {
+          handleCreate();
+        }
+      };
+      
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content w-full max-w-md animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-6 py-5 rounded-t-2xl">
+              <div className="flex items-center gap-3">
+                <Icons.Ship />
+                <div>
+                  <h2 className="text-xl font-display font-bold">New Voyage</h2>
+                  <p className="text-sm text-white/80">Enter voyage details</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-5 dark:bg-navy-800" onKeyDown={handleKeyDown}>
+              {/* Start Date */}
+              <div>
+                <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">
+                  Start Date
+                </label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="w-full px-4 py-3 bg-white dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                             rounded-xl text-lg input-field"
+                  autoFocus
+                />
+              </div>
+
+              {/* From / To Ports */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">
+                    From
+                  </label>
+                  <input
+                    type="text"
+                    value={fromPort}
+                    onChange={(e) => setFromPort(e.target.value)}
+                    placeholder="Singapore"
+                    className="w-full px-4 py-3 bg-white dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                               rounded-xl input-field"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">
+                    To
+                  </label>
+                  <input
+                    type="text"
+                    value={toPort}
+                    onChange={(e) => setToPort(e.target.value)}
+                    placeholder="Hong Kong"
+                    className="w-full px-4 py-3 bg-white dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                               rounded-xl input-field"
+                  />
+                </div>
+              </div>
+
+              {/* Preview */}
+              {voyageName && (
+                <div className="bg-ocean-50 dark:bg-ocean-900/20 border border-ocean-200 dark:border-ocean-800/50 rounded-xl p-4">
+                  <div className="text-xs text-ocean-600 dark:text-ocean-400 font-semibold uppercase tracking-wide mb-1">
+                    Voyage Name
+                  </div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white flex items-center gap-2">
+                    {fromPort} <Icons.ArrowRight /> {toPort}
+                  </div>
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mt-1 font-mono">
+                    📂" {startDate}_{fromPort.replace(/[^a-z0-9]/gi, '_')}_to_{toPort.replace(/[^a-z0-9]/gi, '_')}.json
+                  </div>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={onClose}
+                  className="flex-1 px-4 py-3 rounded-xl bg-navy-100 dark:bg-navy-700 text-navy-700 dark:text-navy-200 
+                             font-semibold hover:bg-navy-200 dark:hover:bg-navy-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreate}
+                  disabled={!canCreate}
+                  className={`flex-1 px-4 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2
+                    ${canCreate 
+                      ? 'btn-primary text-white' 
+                      : 'bg-navy-200 dark:bg-navy-700 text-navy-400 dark:text-navy-500 cursor-not-allowed'}`}
+                >
+                  <Icons.Plus /> Create Voyage
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // IMPORT COUNTERS MODAL
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const ImportCountersModal = ({ isOpen, onClose, onStartFresh, onImport, lastVoyage }) => {
+      const [selectedCounters, setSelectedCounters] = useState({
+        dg12: true,
+        dg4: true,
+        dg3: true,
+        boiler1: true,
+        boiler2: true,
+      });
+      const [showSelection, setShowSelection] = useState(false);
+      
+      if (!isOpen || !lastVoyage) return null;
+      
+      // Get last counter values from the last voyage's final arrival standby phase
+      const getLastCounterValues = () => {
+        const lastLeg = lastVoyage.legs[lastVoyage.legs.length - 1];
+        if (!lastLeg?.arrival?.phases) return null;
+        
+        // Try standby phase first, then last operational phase
+        const standbyPhase = lastLeg.arrival.phases.find(p => p.type === PHASE_TYPES.STANDBY);
+        const lastPhase = standbyPhase || lastLeg.arrival.phases[lastLeg.arrival.phases.length - 1];
+        
+        if (!lastPhase?.equipment) return null;
+        
+        const counters = {};
+        Object.entries(lastPhase.equipment).forEach(([key, eq]) => {
+          counters[key] = eq.end || '';
+        });
+        
+        return counters;
+      };
+      
+      const lastCounters = getLastCounterValues();
+      
+      const formatNumber = (num) => {
+        if (!num || num === '') return '–';
+        return parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      };
+      
+      const equipmentList = [
+        { key: 'dg12', label: 'DG 1-2' },
+        { key: 'dg4', label: 'DG 4' },
+        { key: 'dg3', label: 'DG 3' },
+        { key: 'boiler1', label: 'Boiler 1' },
+        { key: 'boiler2', label: 'Boiler 2' },
+      ];
+      
+      const handleSelectAll = () => {
+        setSelectedCounters({
+          dg12: true, dg4: true, dg3: true, boiler1: true, boiler2: true,
+        });
+      };
+      
+      const handleDeselectAll = () => {
+        setSelectedCounters({
+          dg12: false, dg4: false, dg3: false, boiler1: false, boiler2: false,
+        });
+      };
+      
+      const handleToggle = (key) => {
+        setSelectedCounters(prev => ({ ...prev, [key]: !prev[key] }));
+      };
+      
+      const handleImport = () => {
+        const countersToImport = {};
+        Object.entries(selectedCounters).forEach(([key, isSelected]) => {
+          if (isSelected && lastCounters && lastCounters[key]) {
+            countersToImport[key] = lastCounters[key];
+          }
+        });
+        onImport(countersToImport);
+      };
+      
+      const selectedCount = Object.values(selectedCounters).filter(Boolean).length;
+      
+      // Initial prompt view
+      if (!showSelection) {
+        return (
+          <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content w-full max-w-md animate-scale-in" onClick={e => e.stopPropagation()}>
+              <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-6 py-5 rounded-t-2xl">
+                <div className="flex items-center gap-3">
+                  <Icons.Database />
+                  <div>
+                    <h2 className="text-xl font-display font-bold">New Voyage</h2>
+                    <p className="text-sm text-white/80">Previous voyage data available</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="p-6 dark:bg-navy-800">
+                <div className="mb-5">
+                  <p className="text-navy-700 dark:text-navy-200 mb-3">
+                    Would you like to import counter values from the last voyage?
+                  </p>
+                  <div className="bg-navy-50 dark:bg-navy-900 rounded-xl p-4">
+                    <div className="text-sm text-navy-500 dark:text-navy-400 mb-1">Last Voyage</div>
+                    <div className="font-display font-bold text-navy-800 dark:text-white">
+                      {lastVoyage.name || 'Unnamed Voyage'}
+                    </div>
+                    <div className="text-sm text-navy-500 dark:text-navy-400">
+                      {lastVoyage.endDate || lastVoyage.startDate || 'No date'} • {lastVoyage.legs?.length || 0} legs
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3">
+                  <button
+                    onClick={onStartFresh}
+                    className="flex-1 px-4 py-3 rounded-xl bg-navy-100 dark:bg-navy-700 text-navy-700 dark:text-navy-200 
+                               font-semibold hover:bg-navy-200 dark:hover:bg-navy-600 transition-colors"
+                  >
+                    Start Fresh
+                  </button>
+                  <button
+                    onClick={() => setShowSelection(true)}
+                    className="flex-1 px-4 py-3 rounded-xl font-semibold transition-all btn-primary text-white"
+                  >
+                    Import Counters
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+      
+      // Counter selection view
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content w-full max-w-lg animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-6 py-5 rounded-t-2xl">
+              <div className="flex items-center gap-3">
+                <Icons.Database />
+                <div>
+                  <h2 className="text-xl font-display font-bold">Import Counters</h2>
+                  <p className="text-sm text-white/80">From: {lastVoyage.name || 'Last Voyage'}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-6 dark:bg-navy-800">
+              <div className="mb-4">
+                <p className="text-sm text-navy-600 dark:text-navy-300 mb-4">
+                  Select which counters to carry over. Deselect any that were reset.
+                </p>
+                
+                {/* Select All / Deselect All */}
+                <div className="flex gap-3 mb-4">
+                  <button
+                    onClick={handleSelectAll}
+                    className="px-3 py-1.5 text-sm rounded-lg bg-ocean-100 dark:bg-ocean-900/30 text-ocean-700 dark:text-ocean-300 
+                               hover:bg-ocean-200 dark:hover:bg-ocean-900/50 transition-colors"
+                  >
+                    ✓ Select All
+                  </button>
+                  <button
+                    onClick={handleDeselectAll}
+                    className="px-3 py-1.5 text-sm rounded-lg bg-navy-100 dark:bg-navy-700 text-navy-600 dark:text-navy-300 
+                               hover:bg-navy-200 dark:hover:bg-navy-600 transition-colors"
+                  >
+                    ✗ Deselect All
+                  </button>
+                </div>
+                
+                {/* Counter List */}
+                <div className="space-y-2">
+                  {equipmentList.map(({ key, label }) => {
+                    const value = lastCounters?.[key];
+                    const hasValue = value && value !== '';
+                    
+                    return (
+                      <div 
+                        key={key}
+                        onClick={() => hasValue && handleToggle(key)}
+                        className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all
+                          ${!hasValue 
+                            ? 'bg-navy-50 dark:bg-navy-900/50 border-navy-200 dark:border-navy-700 opacity-50 cursor-not-allowed'
+                            : selectedCounters[key]
+                              ? 'bg-ocean-50 dark:bg-ocean-900/20 border-ocean-300 dark:border-ocean-700 cursor-pointer'
+                              : 'bg-white dark:bg-navy-800 border-navy-200 dark:border-navy-700 cursor-pointer hover:border-navy-300'
+                          }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors
+                            ${!hasValue 
+                              ? 'bg-navy-200 dark:bg-navy-700'
+                              : selectedCounters[key]
+                                ? 'bg-ocean-500 text-white'
+                                : 'bg-navy-200 dark:bg-navy-700'
+                            }`}
+                          >
+                            {selectedCounters[key] && hasValue && <Icons.Check />}
+                          </div>
+                          <span className="font-semibold text-navy-800 dark:text-white">{label}</span>
+                        </div>
+                        <div className="text-right">
+                          {hasValue ? (
+                            <>
+                              <div className="font-mono font-bold text-navy-800 dark:text-white">
+                                {formatNumber(value)} m³
+                              </div>
+                              {!selectedCounters[key] && (
+                                <div className="text-xs text-gold-600 dark:text-gold-400 font-semibold">RESET</div>
+                              )}
+                            </>
+                          ) : (
+                            <div className="text-sm text-navy-400 dark:text-navy-500">No data</div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              
+              <div className="bg-navy-50 dark:bg-navy-900 rounded-xl p-3 mb-4 text-sm text-navy-600 dark:text-navy-300">
+                Selected counters will populate the first Departure phase Start values.
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowSelection(false)}
+                  className="px-4 py-3 rounded-xl bg-navy-100 dark:bg-navy-700 text-navy-700 dark:text-navy-200 
+                             font-semibold hover:bg-navy-200 dark:hover:bg-navy-600 transition-colors"
+                >
+                  ← Back
+                </button>
+                <button
+                  onClick={handleImport}
+                  className="flex-1 px-4 py-3 rounded-xl font-semibold transition-all btn-primary text-white"
+                >
+                  Import {selectedCount > 0 ? `${selectedCount} Counter${selectedCount !== 1 ? 's' : ''}` : 'Selected'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // EQUIPMENT ROW
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const EquipmentRow = ({ label, equipmentKey, data, onChange, disabled = false, allowedFuels = null, densities }) => {
+      const consumption = calcConsumption(data.start, data.end, data.fuel, densities);
+      const diff = (data.start && data.end) ? (parseFloat(data.end) - parseFloat(data.start)).toFixed(1) : '–';
+      
+      // Use allowedFuels if provided, otherwise use all FUEL_OPTIONS
+      const fuelOptions = allowedFuels || FUEL_OPTIONS;
+      return (
+        <tr className="table-row border-b border-navy-100 dark:border-navy-700">
+          <td className="py-3 px-4 font-medium text-navy-700 dark:text-navy-200">{label}</td>
+          <td className="py-2 px-2">
+            <select
+              value={data.fuel}
+              onChange={(e) => onChange({ ...data, fuel: e.target.value })}
+              disabled={disabled}
+              className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-all
+                ${disabled 
+                  ? 'bg-navy-100 dark:bg-navy-800 text-navy-400 dark:text-navy-500 cursor-not-allowed' 
+                  : 'bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 text-navy-700 dark:text-navy-200 cursor-pointer hover:border-ocean-400'}`}
+            >
+              {fuelOptions.map(f => <option key={f} value={f}>{f}</option>)}
+            </select>
+          </td>
+          <td className="py-2 px-2">
+            <input
+              type="number"
+              step="0.1"
+              value={data.start}
+              onChange={(e) => onChange({ ...data, start: e.target.value })}
+              className="w-full px-3 py-2 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                         rounded-lg text-sm font-mono input-field"
+              placeholder="0.0"
+            />
+          </td>
+          <td className="py-2 px-2">
+            <input
+              type="number"
+              step="0.1"
+              value={data.end}
+              onChange={(e) => onChange({ ...data, end: e.target.value })}
+              className="w-full px-3 py-2 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                         rounded-lg text-sm font-mono input-field"
+              placeholder="0.0"
+            />
+          </td>
+          <td className="py-3 px-4 text-right font-mono text-sm text-navy-500 dark:text-navy-400">{diff}</td>
+          <td className="py-3 px-4 text-right font-mono text-sm font-semibold text-ocean-600 dark:text-ocean-400">
+            {consumption ?? '–'}
+          </td>
+        </tr>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // PHASE SECTION
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const PhaseSection = ({ phase, onChange, onDelete, canDelete, densities, collapsed, showTotals, cumulativeTotals }) => {
+      const handleEquipmentChange = (key, value) => {
+        onChange({ ...phase, equipment: { ...phase.equipment, [key]: value } });
+      };
+
+      const handleTitleChange = (e) => {
+        onChange({ ...phase, name: e.target.value });
+      };
+
+      const handleRemarksChange = (e) => {
+        onChange({ ...phase, remarks: e.target.value });
+      };
+      
+
+
+      // Calculate totals
+      const totals = { HFO: 0, MGO: 0, LSFO: 0 };
+      const engineTotals = { HFO: 0, MGO: 0, LSFO: 0 };
+      const boilerTotals = { HFO: 0, MGO: 0, LSFO: 0 };
+      
+      Object.entries(phase.equipment).forEach(([key, eq]) => {
+        const cons = calcConsumption(eq.start, eq.end, eq.fuel, densities);
+        if (cons) {
+          totals[eq.fuel] += parseFloat(cons);
+          if (key.startsWith('dg')) {
+            engineTotals[eq.fuel] += parseFloat(cons);
+          } else if (key.startsWith('boiler')) {
+            boilerTotals[eq.fuel] += parseFloat(cons);
+          }
+        }
+      });
+
+      const displayEngineTotals = cumulativeTotals ? cumulativeTotals.engineCumulative : engineTotals;
+      const displayBoilerTotals = cumulativeTotals ? cumulativeTotals.boilerCumulative : boilerTotals;
+      const displayGrandTotal = cumulativeTotals 
+        ? cumulativeTotals.cumulative.HFO + cumulativeTotals.cumulative.MGO + cumulativeTotals.cumulative.LSFO
+        : totals.HFO + totals.MGO + totals.LSFO;
+
+      const getPhaseClass = () => {
+        if (phase.type === PHASE_TYPES.STANDBY) return 'phase-standby';
+        if (phase.type === PHASE_TYPES.SEA) return 'phase-sea';
+        return 'phase-port';
+      };
+
+      const getPhaseIcon = () => {
+        if (phase.type === PHASE_TYPES.STANDBY) return 'âš"';
+        if (phase.type === PHASE_TYPES.SEA) return '🌊';
+        return '🏭';
+      };
+
+      const getPhaseLabel = () => {
+        if (phase.type === PHASE_TYPES.STANDBY) return 'STANDBY';
+        if (phase.type === PHASE_TYPES.SEA) return 'SEA';
+        return 'PORT';
+      };
+
+      const buildFuelString = (totals) => {
+        const parts = [];
+        if (totals.HFO > 0) parts.push(`HFO: ${totals.HFO.toFixed(2)}`);
+        if (totals.MGO > 0) parts.push(`MGO: ${totals.MGO.toFixed(2)}`);
+        if (totals.LSFO > 0) parts.push(`LSFO: ${totals.LSFO.toFixed(2)}`);
+        return parts.length > 0 ? parts.join(' • ') : '0.00';
+      };
+
+      const engineTotal = displayEngineTotals.HFO + displayEngineTotals.MGO + displayEngineTotals.LSFO;
+      const boilerTotal = displayBoilerTotals.HFO + displayBoilerTotals.MGO + displayBoilerTotals.LSFO;
+
+      return (
+        <div className="mb-4 phase-card glass-card rounded-xl overflow-hidden animate-fade-in">
+          <div className={`${getPhaseClass()} text-white px-5 py-3 flex justify-between items-center`}>
+            <div className="flex items-center gap-3 flex-1">
+              <span className="text-lg">{getPhaseIcon()}</span>
+              <span className="text-xs bg-white/20 px-2.5 py-1 rounded-full font-semibold tracking-wide">
+                {getPhaseLabel()}
+              </span>
+              <input
+                type="text"
+                value={phase.name}
+                onChange={handleTitleChange}
+                placeholder="Enter phase name..."
+                className="phase-title-input"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              {canDelete && (
+                <button
+                  onClick={onDelete}
+                  className="text-white/70 hover:text-white hover:bg-black/20 p-1.5 rounded-lg transition-colors"
+                  title="Delete this phase"
+                >
+                  <Icons.X />
+                </button>
+              )}
+            </div>
+          </div>
+          
+          {!collapsed && (
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-navy-50/80 dark:bg-navy-800/50">
+                    <tr>
+                      <th className="py-3 px-4 text-left font-semibold text-navy-600 dark:text-navy-300 w-28">Equipment</th>
+                      <th className="py-3 px-4 text-left font-semibold text-navy-600 dark:text-navy-300 w-24">Fuel</th>
+                      <th className="py-3 px-4 text-left font-semibold text-navy-600 dark:text-navy-300 w-32">Start (m³)</th>
+                      <th className="py-3 px-4 text-left font-semibold text-navy-600 dark:text-navy-300 w-32">End (m³)</th>
+                      <th className="py-3 px-4 text-right font-semibold text-navy-600 dark:text-navy-300 w-24">Diff (m³)</th>
+                      <th className="py-3 px-4 text-right font-semibold text-navy-600 dark:text-navy-300 w-24">MT</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white/50 dark:bg-navy-900/30">
+                    <EquipmentRow label="DG 1-2" equipmentKey="dg12" data={phase.equipment.dg12} onChange={(v) => handleEquipmentChange('dg12', v)} densities={densities} />
+                    <EquipmentRow label="DG 4" equipmentKey="dg4" data={phase.equipment.dg4} onChange={(v) => handleEquipmentChange('dg4', v)} densities={densities} />
+                    <EquipmentRow label="DG 3" equipmentKey="dg3" data={phase.equipment.dg3} onChange={(v) => handleEquipmentChange('dg3', v)} allowedFuels={['MGO', 'LSFO']} densities={densities} />
+                    <EquipmentRow label="Boiler 1" equipmentKey="boiler1" data={phase.equipment.boiler1} onChange={(v) => handleEquipmentChange('boiler1', v)} disabled={true} densities={densities} />
+                    <EquipmentRow label="Boiler 2" equipmentKey="boiler2" data={phase.equipment.boiler2} onChange={(v) => handleEquipmentChange('boiler2', v)} disabled={true} densities={densities} />
+                  </tbody>
+                </table>
+              </div>
+              
+              {showTotals && (
+                <div className="p-4 bg-gradient-to-r from-ocean-50/50 to-transparent dark:from-ocean-900/20 dark:to-transparent border-t border-ocean-100 dark:border-ocean-800/30">
+                  <div className={`grid gap-4 ${phase.type !== PHASE_TYPES.STANDBY ? 'grid-cols-4' : 'grid-cols-2 max-w-xl'}`}>
+                    {/* Engine Totals */}
+                    <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="font-bold text-navy-800 dark:text-white mb-3 text-sm border-b border-navy-100 dark:border-navy-700 pb-2 flex items-center gap-2">
+                        <span className="text-base">⚙️</span>
+                        <span>Engine Totals</span>
+                        {cumulativeTotals && <span className="text-xs text-ocean-500 font-normal">(Cumulative)</span>}
+                      </div>
+                      <div className="space-y-1.5">
+                        {displayEngineTotals.HFO > 0 && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-navy-500 dark:text-navy-400 text-sm">HFO:</span>
+                            <span className="font-mono font-bold text-navy-800 dark:text-white">{displayEngineTotals.HFO.toFixed(2)} MT</span>
+                          </div>
+                        )}
+                        {displayEngineTotals.MGO > 0 && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-navy-500 dark:text-navy-400 text-sm">MGO:</span>
+                            <span className="font-mono font-bold text-navy-800 dark:text-white">{displayEngineTotals.MGO.toFixed(2)} MT</span>
+                          </div>
+                        )}
+                        {displayEngineTotals.LSFO > 0 && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-navy-500 dark:text-navy-400 text-sm">LSFO:</span>
+                            <span className="font-mono font-bold text-navy-800 dark:text-white">{displayEngineTotals.LSFO.toFixed(2)} MT</span>
+                          </div>
+                        )}
+                        {engineTotal === 0 && (
+                          <div className="text-navy-400 dark:text-navy-500 text-sm italic">No consumption</div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Boiler Totals */}
+                    <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="font-bold text-navy-800 dark:text-white mb-3 text-sm border-b border-navy-100 dark:border-navy-700 pb-2 flex items-center gap-2">
+                        <span className="text-base">🔥</span>
+                        <span>Boiler Totals</span>
+                        {cumulativeTotals && <span className="text-xs text-ocean-500 font-normal">(Cumulative)</span>}
+                      </div>
+                      <div className="space-y-1.5">
+                        {displayBoilerTotals.HFO > 0 && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-navy-500 dark:text-navy-400 text-sm">HFO:</span>
+                            <span className="font-mono font-bold text-navy-800 dark:text-white">{displayBoilerTotals.HFO.toFixed(2)} MT</span>
+                          </div>
+                        )}
+                        {displayBoilerTotals.MGO > 0 && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-navy-500 dark:text-navy-400 text-sm">MGO:</span>
+                            <span className="font-mono font-bold text-navy-800 dark:text-white">{displayBoilerTotals.MGO.toFixed(2)} MT</span>
+                          </div>
+                        )}
+                        {displayBoilerTotals.LSFO > 0 && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-navy-500 dark:text-navy-400 text-sm">LSFO:</span>
+                            <span className="font-mono font-bold text-navy-800 dark:text-white">{displayBoilerTotals.LSFO.toFixed(2)} MT</span>
+                          </div>
+                        )}
+                        {boilerTotal === 0 && (
+                          <div className="text-navy-400 dark:text-navy-500 text-sm italic">No consumption</div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Remarks - Only for Port/Sea phases, not Standby */}
+                    {phase.type !== PHASE_TYPES.STANDBY && (
+                      <div className="col-span-2 bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="font-bold text-navy-800 dark:text-white mb-3 text-sm border-b border-navy-100 dark:border-navy-700 pb-2 flex items-center gap-2">
+                          <span className="text-base">📝</span>
+                          <span>Remarks</span>
+                        </div>
+                        <textarea
+                          value={phase.remarks || ''}
+                          onChange={handleRemarksChange}
+                          placeholder="Enter remarks..."
+                          rows="3"
+                          className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                     rounded-lg text-sm input-field resize-none"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // REPORT FORM
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const EQUIPMENT_LABELS = {
+      dg12: 'DG 1-2',
+      dg4: 'DG 4',
+      dg3: 'DG 3',
+      boiler1: 'Boiler 1',
+      boiler2: 'Boiler 2',
+    };
+    
+    const ReportForm = ({ report, onChange, densities, legIndex, reportType, onPhaseEnd }) => {
+      const [collapsed, setCollapsed] = useState(false);
+      const toast = useToast();
+      
+      const operationalPhases = report.phases.filter(p => p.type !== PHASE_TYPES.STANDBY);
+      const standbyPhase = report.phases.find(p => p.type === PHASE_TYPES.STANDBY);
+      
+      const handlePhaseChange = (phaseId, newPhase, phaseIndex) => {
+        const newPhases = report.phases.map(p => p.id === phaseId ? newPhase : p);
+        onChange({ ...report, phases: newPhases });
+        // Track for manual carry-over
+        if (onPhaseEnd && phaseIndex !== undefined) {
+          onPhaseEnd(legIndex, reportType, phaseIndex, newPhase.name, newPhase.equipment);
+        }
+      };
+      
+      const handleAddPhase = () => {
+        const phaseType = report.type === 'departure' ? PHASE_TYPES.PORT : PHASE_TYPES.SEA;
+        const defaultName = 'C/O (From → To)';
+        const newPhase = createPhase(phaseType, defaultName);
+        
+        const newPhases = [...operationalPhases, newPhase];
+        if (standbyPhase) {
+          newPhases.push(standbyPhase);
+        }
+        onChange({ ...report, phases: newPhases });
+        toast.addToast('New phase added', 'success');
+      };
+
+      const handleDeletePhase = (phaseId) => {
+        const newPhases = report.phases.filter(p => p.id !== phaseId);
+        onChange({ ...report, phases: newPhases });
+      };
+
+      // Calculate totals
+      const grandTotals = { HFO: 0, MGO: 0, LSFO: 0 };
+      report.phases.forEach((phase) => {
+        Object.values(phase.equipment).forEach(eq => {
+          const cons = calcConsumption(eq.start, eq.end, eq.fuel, densities);
+          if (cons) grandTotals[eq.fuel] += parseFloat(cons);
+        });
+      });
+
+      const calculateCumulativeTotals = () => {
+        const cumulative = { HFO: 0, MGO: 0, LSFO: 0 };
+        const engineCumulative = { HFO: 0, MGO: 0, LSFO: 0 };
+        const boilerCumulative = { HFO: 0, MGO: 0, LSFO: 0 };
+        
+        operationalPhases.forEach((phase) => {
+          Object.entries(phase.equipment).forEach(([key, eq]) => {
+            const cons = calcConsumption(eq.start, eq.end, eq.fuel, densities);
+            if (cons) {
+              cumulative[eq.fuel] += parseFloat(cons);
+              if (key.startsWith('dg')) {
+                engineCumulative[eq.fuel] += parseFloat(cons);
+              } else if (key.startsWith('boiler')) {
+                boilerCumulative[eq.fuel] += parseFloat(cons);
+              }
+            }
+          });
+        });
+        
+        return { cumulative, engineCumulative, boilerCumulative };
+      };
+
+      const totalConsumption = grandTotals.HFO + grandTotals.MGO + grandTotals.LSFO;
+      const isDeparture = report.type === 'departure';
+
+      return (
+        <>
+          <div className="glass-card rounded-2xl overflow-hidden mb-5 animate-slide-up">
+            <div 
+              className={`px-5 py-4 cursor-pointer flex justify-between items-center transition-colors
+                ${isDeparture 
+                  ? 'bg-gradient-to-r from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20' 
+                  : 'bg-gradient-to-r from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/20 dark:to-teal-500/20'}`}
+              onClick={() => setCollapsed(!collapsed)}
+            >
+            <div className="flex items-center gap-3">
+              <span className={`text-2xl ${isDeparture ? 'text-blue-500' : 'text-emerald-500'}`}>
+                {isDeparture ? '🚢' : '⚓'}
+              </span>
+              <div>
+                <h3 className="text-lg font-display font-bold text-navy-800 dark:text-white">
+                  {isDeparture ? 'Departure' : 'Arrival'} – {report.port || 'No port'}
+                </h3>
+                <p className="text-sm text-navy-500 dark:text-navy-400">
+                  {report.date || 'No date'} • {report.phases.length} phases
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className={`px-4 py-2 rounded-xl font-display font-bold text-white
+                ${isDeparture 
+                  ? 'bg-gradient-to-r from-blue-500 to-indigo-600' 
+                  : 'bg-gradient-to-r from-emerald-500 to-teal-600'}`}>
+                {totalConsumption.toFixed(2)} MT
+              </div>
+              <span className={`text-navy-400 transition-transform duration-300 ${collapsed ? '' : 'rotate-180'}`}>
+                <Icons.ChevronDown />
+              </span>
+            </div>
+          </div>
+
+          {!collapsed && (
+            <div className="p-5 dark:bg-navy-900/30">
+              {/* Basic Info */}
+              <div className="grid grid-cols-4 gap-4 mb-6">
+                <div>
+                  <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">Date</label>
+                  <input type="date" value={report.date}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => onChange({ ...report, date: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                               rounded-xl text-sm input-field" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">Port</label>
+                  <input type="text" value={report.port}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => onChange({ ...report, port: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                               rounded-xl text-sm input-field" placeholder="Singapore" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">Engineer</label>
+                  <input type="text" value={report.engineer}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => onChange({ ...report, engineer: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                               rounded-xl text-sm input-field" />
+                </div>
+                {isDeparture ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">SBE</label>
+                      <input type="time" value={report.timeEvents.sbe} step="360"
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, sbe: e.target.value }})}
+                        className="w-full px-3 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                                   rounded-xl text-sm input-field font-mono" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">FA</label>
+                      <input type="time" value={report.timeEvents.fa} step="360"
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, fa: e.target.value }})}
+                        className="w-full px-3 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                                   rounded-xl text-sm input-field font-mono" />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">SBE</label>
+                      <input type="time" value={report.timeEvents.sbe} step="360"
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, sbe: e.target.value }})}
+                        className="w-full px-3 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                                   rounded-xl text-sm input-field font-mono" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">FWE</label>
+                      <input type="time" value={report.timeEvents.fwe} step="360"
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, fwe: e.target.value }})}
+                        className="w-full px-3 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                                   rounded-xl text-sm input-field font-mono" />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Phase Section Label */}
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-sm font-semibold text-navy-600 dark:text-navy-300">
+                  {isDeparture ? '🏭 Port / Changeover Phases' : '🌊 Sea / Changeover Phases'}
+                </span>
+                <div className="flex-1 border-t border-navy-200 dark:border-navy-700"></div>
+              </div>
+
+              {/* Operational Phases */}
+              {operationalPhases.map((phase, index) => {
+                const isLastOperationalPhase = index === operationalPhases.length - 1;
+                const hasMultiplePhases = operationalPhases.length > 1;
+                // Only show cumulative totals when there are 2+ phases
+                const cumulativeTotals = (isLastOperationalPhase && hasMultiplePhases) ? calculateCumulativeTotals() : null;
+                
+                return (
+                  <PhaseSection
+                    key={phase.id}
+                    phase={phase}
+                    onChange={(p) => handlePhaseChange(phase.id, p, index)}
+                    onDelete={() => handleDeletePhase(phase.id)}
+                    canDelete={operationalPhases.length > 1}
+                    densities={densities}
+                    collapsed={false}
+                    showTotals={isLastOperationalPhase}
+                    cumulativeTotals={cumulativeTotals}
+                  />
+                );
+              })}
+
+              {/* Add Phase Button */}
+              <button
+                onClick={handleAddPhase}
+                className="w-full py-3 border-2 border-dashed border-ocean-300 dark:border-ocean-700 hover:border-ocean-500 dark:hover:border-ocean-500 
+                           hover:bg-ocean-50 dark:hover:bg-ocean-900/20 rounded-xl text-ocean-500 hover:text-ocean-600 
+                           font-semibold text-sm mb-5 transition-all flex items-center justify-center gap-2"
+              >
+                <Icons.Plus /> Add Fuel Changeover Phase
+              </button>
+
+              {/* Stand By Phase Section */}
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-sm font-semibold text-navy-600 dark:text-navy-300">âš" Stand By (Maneuvering)</span>
+                <div className="flex-1 border-t border-navy-200 dark:border-navy-700"></div>
+              </div>
+
+              {standbyPhase && (
+                <PhaseSection
+                  key={standbyPhase.id}
+                  phase={standbyPhase}
+                  onChange={(p) => handlePhaseChange(standbyPhase.id, p, report.phases.length - 1)}
+                  onDelete={() => {}}
+                  canDelete={false}
+                  densities={densities}
+                  collapsed={false}
+                  showTotals={true}
+                  cumulativeTotals={null}
+                />
+              )}
+
+              {/* Grand Totals */}
+              <div className={`report-totals rounded-2xl p-5 text-white shadow-lg
+                ${isDeparture 
+                  ? 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-blue-500/25' 
+                  : 'bg-gradient-to-r from-emerald-500 to-teal-600 shadow-emerald-500/25'}`}>
+                <div className="text-xs font-semibold opacity-90 mb-3 uppercase tracking-wider">Report Totals</div>
+                <div className="grid grid-cols-4 gap-4 text-center">
+                  {[
+                    { label: 'HFO', value: grandTotals.HFO },
+                    { label: 'MGO', value: grandTotals.MGO },
+                    { label: 'LSFO', value: grandTotals.LSFO },
+                    { label: 'Total', value: totalConsumption },
+                  ].map(item => (
+                    <div key={item.label} className="bg-white/20 backdrop-blur-sm rounded-xl p-3 hover:bg-white/25 transition-colors">
+                      <div className="text-2xl font-display font-bold">{item.value.toFixed(2)}</div>
+                      <div className="text-xs opacity-90 font-medium">{item.label} (MT)</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Fuel R.O.B. & Bunkered - Departure Only */}
+              {isDeparture && (
+                <div className="grid grid-cols-2 gap-5 mt-5 max-w-xl">
+                  {/* R.O.B. */}
+                  <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
+                    <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">Fuel R.O.B. (MT)</h4>
+                    <div className="space-y-2">
+                      {['hfo', 'mgo', 'lsfo'].map(fuel => (
+                        <div key={fuel} className="flex items-center gap-3">
+                          <label className="w-10 text-xs text-navy-500 dark:text-navy-400 uppercase font-semibold flex-shrink-0">{fuel}</label>
+                          <input type="number" step="0.01" value={report.rob[fuel]}
+                            onChange={(e) => onChange({ ...report, rob: { ...report.rob, [fuel]: e.target.value }})}
+                            className="flex-1 min-w-0 px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                       rounded-lg text-sm font-mono input-field" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bunkered */}
+                  <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
+                    <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">Fuel Bunkered (MT)</h4>
+                    <div className="space-y-2">
+                      {['hfo', 'mgo', 'lsfo'].map(fuel => (
+                        <div key={fuel} className="flex items-center gap-3">
+                          <label className="w-10 text-xs text-navy-500 dark:text-navy-400 uppercase font-semibold flex-shrink-0">{fuel}</label>
+                          <input type="number" step="0.01" value={report.bunkered[fuel]}
+                            onChange={(e) => onChange({ ...report, bunkered: { ...report.bunkered, [fuel]: e.target.value }})}
+                            className="flex-1 min-w-0 px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                       rounded-lg text-sm font-mono input-field" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Auxiliary Data - Arrival Only */}
+              {!isDeparture && (
+                <div className="grid grid-cols-3 gap-4 mt-5">
+                  {/* R.O.B. */}
+                  <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
+                    <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">R.O.B. (MT)</h4>
+                    <div className="space-y-2">
+                      {['hfo', 'mgo', 'lsfo'].map(fuel => (
+                        <div key={fuel} className="flex items-center gap-3">
+                          <label className="w-10 text-xs text-navy-500 dark:text-navy-400 uppercase font-semibold flex-shrink-0">{fuel}</label>
+                          <input type="number" step="0.01" value={report.rob[fuel]}
+                            onChange={(e) => onChange({ ...report, rob: { ...report.rob, [fuel]: e.target.value }})}
+                            className="flex-1 min-w-0 px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                       rounded-lg text-sm font-mono input-field" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Fresh Water */}
+                  <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
+                    <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">Fresh Water (MT)</h4>
+                    <div className="space-y-2">
+                      {[['rob', 'R.O.B.'], ['bunkered', 'Bunk.'], ['production', 'Prod.'], ['consumption', 'Cons.']].map(([key, label]) => (
+                        <div key={key} className="flex items-center gap-3">
+                          <label className="w-10 text-xs text-navy-500 dark:text-navy-400 font-semibold flex-shrink-0">{label}</label>
+                          <input type="number" step="0.1" value={report.freshWater[key]}
+                            onChange={(e) => onChange({ ...report, freshWater: { ...report.freshWater, [key]: e.target.value }})}
+                            className="flex-1 min-w-0 px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                       rounded-lg text-sm font-mono input-field" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* AEP / Alkali */}
+                  <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
+                    <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">AEP / Alkali</h4>
+                    <div className="space-y-2">
+                      <div>
+                        <label className="block text-xs text-navy-400 dark:text-navy-500 mb-1">Open Loop (hh:mm)</label>
+                        <input type="text" value={report.aep.openLoopHrs} placeholder="00:00"
+                          onChange={(e) => onChange({ ...report, aep: { ...report.aep, openLoopHrs: e.target.value }})}
+                          className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                     rounded-lg text-xs font-mono input-field" />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-navy-400 dark:text-navy-500 mb-1">Closed Loop (hh:mm)</label>
+                        <input type="text" value={report.aep.closedLoopHrs} placeholder="00:00"
+                          onChange={(e) => onChange({ ...report, aep: { ...report.aep, closedLoopHrs: e.target.value }})}
+                          className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                     rounded-lg text-xs font-mono input-field" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-xs text-navy-400 dark:text-navy-500 mb-1">NaOH Cons (L)</label>
+                          <input type="number" step="0.1" value={report.aep.alkaliCons}
+                            onChange={(e) => onChange({ ...report, aep: { ...report.aep, alkaliCons: e.target.value }})}
+                            className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                       rounded-lg text-xs font-mono input-field" />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-navy-400 dark:text-navy-500 mb-1">NaOH ROB (L)</label>
+                          <input type="number" step="0.1" value={report.aep.alkaliRob}
+                            onChange={(e) => onChange({ ...report, aep: { ...report.aep, alkaliRob: e.target.value }})}
+                            className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 
+                                       rounded-lg text-xs font-mono input-field" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        </>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // LEG SECTION
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const LegSection = ({ leg, onChange, onDelete, legIndex, densities, externalCollapsed, onPhaseEnd }) => {
+      const [localOverride, setLocalOverride] = useState(null);
+      const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+      const toast = useToast();
+      
+      const depPort = leg.departure?.port || '?';
+      const arrPort = leg.arrival?.port || '?';
+      
+      const collapsed = localOverride !== null ? localOverride : (externalCollapsed !== undefined ? externalCollapsed : false);
+      
+      // Simple departure change - no auto-fill, user uses manual Carry Over button
+      const handleDepartureChange = (newDeparture) => {
+        onChange({ ...leg, departure: newDeparture });
+      };
+      
+      // Calculate leg totals
+      let legTotalHFO = 0, legTotalMGO = 0, legTotalLSFO = 0;
+      [leg.departure, leg.arrival].forEach(report => {
+        if (!report) return;
+        report.phases.forEach((phase) => {
+          Object.values(phase.equipment).forEach(eq => {
+            const cons = calcConsumption(eq.start, eq.end, eq.fuel, densities);
+            if (cons) {
+              if (eq.fuel === 'HFO') legTotalHFO += parseFloat(cons);
+              else if (eq.fuel === 'MGO') legTotalMGO += parseFloat(cons);
+              else legTotalLSFO += parseFloat(cons);
+            }
+          });
+        });
+      });
+      
+      const legTotal = legTotalHFO + legTotalMGO + legTotalLSFO;
+      
+      const handleToggleCollapse = () => {
+        setLocalOverride(!collapsed);
+      };
+      
+      useEffect(() => {
+        if (externalCollapsed === undefined) {
+          setLocalOverride(null);
+        }
+      }, [externalCollapsed]);
+      
+      return (
+        <>
+          <ConfirmModal
+            isOpen={showDeleteConfirm}
+            onClose={() => setShowDeleteConfirm(false)}
+            onConfirm={onDelete}
+            title="Delete Leg"
+            message={`Are you sure you want to delete Leg ${legIndex + 1} (${depPort} → ${arrPort})? This action cannot be undone.`}
+            confirmText="Delete Leg"
+            danger={true}
+          />
+          
+          <div className="glass-card rounded-2xl overflow-hidden mb-5 animate-slide-up" style={{ animationDelay: `${legIndex * 0.1}s` }}>
+            <div 
+              className="px-5 py-4 cursor-pointer flex justify-between items-center bg-gradient-to-r from-navy-50 to-navy-100/50 
+                         dark:from-navy-800/50 dark:to-navy-900/30 hover:from-navy-100 hover:to-navy-100 
+                         dark:hover:from-navy-800 dark:hover:to-navy-800 transition-all"
+              onClick={handleToggleCollapse}
+            >
+              <div className="flex items-center gap-4">
+                <span className={`text-navy-400 dark:text-navy-500 transition-transform duration-300 ${collapsed ? '' : 'rotate-90'}`}>
+                  <Icons.ChevronRight />
+                </span>
+                <div>
+                  <h2 className="text-lg font-display font-bold text-navy-800 dark:text-white flex items-center gap-2">
+                    <span className="text-ocean-500">Leg {legIndex + 1}</span>
+                    <Icons.ArrowRight />
+                    <span>{depPort} → {arrPort}</span>
+                  </h2>
+                  {collapsed && (
+                    <p className="text-sm text-navy-500 dark:text-navy-400">
+                      HFO: {legTotalHFO.toFixed(2)} • MGO: {legTotalMGO.toFixed(2)} • LSFO: {legTotalLSFO.toFixed(2)}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-4 py-2 rounded-xl font-display font-bold shadow-lg shadow-ocean-500/25">
+                  {legTotal.toFixed(2)} MT
+                </div>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setShowDeleteConfirm(true); }} 
+                  className="p-2 text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                  title="Delete Leg"
+                >
+                  <Icons.Trash />
+                </button>
+              </div>
+            </div>
+            
+            {!collapsed && (
+              <div className="p-5 dark:bg-navy-900/20">
+                <ReportForm 
+                  report={leg.departure} 
+                  onChange={handleDepartureChange}
+                  densities={densities}
+                  legIndex={legIndex}
+                  reportType="departure"
+                  onPhaseEnd={onPhaseEnd}
+                />
+                <ReportForm 
+                  report={leg.arrival} 
+                  onChange={(r) => onChange({ ...leg, arrival: r })}
+                  densities={densities}
+                  legIndex={legIndex}
+                  reportType="arrival"
+                  onPhaseEnd={onPhaseEnd}
+                />
+              </div>
+            )}
+          </div>
+        </>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CRUISE SUMMARY
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    const CruiseSummary = ({ cruise, densities }) => {
+      let totalHFO = 0, totalMGO = 0, totalLSFO = 0, totalFWCons = 0, totalFWProd = 0;
+      let lastFuelROB = { hfo: '–', mgo: '–', lsfo: '–' };
+      let lastFWROB = '–';
+      let lastNaOHROB = '–';
+      let totalNaOHCons = 0;
+      
+      cruise.legs.forEach(leg => {
+        [leg.departure, leg.arrival].forEach(report => {
+          if (!report) return;
+          report.phases.forEach((phase) => {
+            Object.values(phase.equipment).forEach(eq => {
+              const cons = calcConsumption(eq.start, eq.end, eq.fuel, densities);
+              if (cons) {
+                if (eq.fuel === 'HFO') totalHFO += parseFloat(cons);
+                else if (eq.fuel === 'MGO') totalMGO += parseFloat(cons);
+                else totalLSFO += parseFloat(cons);
+              }
+            });
+          });
+          if (report.type === 'arrival') {
+            if (report.freshWater.consumption) totalFWCons += parseFloat(report.freshWater.consumption);
+            if (report.freshWater.production) totalFWProd += parseFloat(report.freshWater.production);
+            if (report.aep.alkaliCons) totalNaOHCons += parseFloat(report.aep.alkaliCons);
+            
+            // Get last ROB values
+            if (report.rob.hfo) lastFuelROB.hfo = parseFloat(report.rob.hfo).toFixed(2);
+            if (report.rob.mgo) lastFuelROB.mgo = parseFloat(report.rob.mgo).toFixed(2);
+            if (report.rob.lsfo) lastFuelROB.lsfo = parseFloat(report.rob.lsfo).toFixed(2);
+            if (report.freshWater.rob) lastFWROB = parseFloat(report.freshWater.rob).toFixed(2);
+            if (report.aep.alkaliRob) lastNaOHROB = parseFloat(report.aep.alkaliRob).toFixed(2);
+          }
+        });
+      });
+
+      const isCompleted = !!cruise.voyageEnd;
+      const lubeOil = cruise.voyageEnd?.lubeOilCons || '–';
+      const lubeOilROBValue = cruise.voyageEnd?.lubeOilROB || '–';
+
+      return (
+        <div className="glass-card rounded-2xl p-5 mb-6 overflow-hidden animate-fade-in">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">📊</span>
+              <h3 className="text-lg font-display font-bold text-navy-800 dark:text-white">
+                Cruise Summary: {cruise.name || 'Unnamed'}
+              </h3>
+              {isCompleted && (
+                <span className="badge bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1">
+                  ✓ Completed
+                </span>
+              )}
+            </div>
+            {isCompleted && (
+              <div className="text-sm text-navy-500 dark:text-navy-400">
+                <span className="font-medium">Engineer:</span> {cruise.voyageEnd.engineer || 'N/A'}
+                <span className="mx-2">•</span>
+                <span>{new Date(cruise.voyageEnd.timestamp).toLocaleDateString()}</span>
+              </div>
+            )}
+          </div>
+          
+          {/* Stats Grid */}
+          <div className="grid grid-cols-12 gap-3">
+            {/* Legs */}
+            <div className="col-span-1 bg-gradient-to-br from-ocean-500/10 to-ocean-600/10 dark:from-ocean-500/20 dark:to-ocean-600/20 
+                           rounded-xl p-3 text-center border border-ocean-200/50 dark:border-ocean-700/30">
+              <div className="text-xs font-semibold text-ocean-700 dark:text-ocean-400 mb-2 uppercase tracking-wide">🚢 Legs</div>
+              <div className="text-2xl font-display font-bold text-navy-800 dark:text-white">{cruise.legs.length}</div>
+            </div>
+            
+            {/* Fuel Section */}
+            <div className="col-span-4 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/20 dark:to-orange-500/20 
+                           rounded-xl p-3 border border-amber-200/50 dark:border-amber-700/30">
+              <div className="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-2 uppercase tracking-wide">⛽ Fuel (MT)</div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">HFO</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{totalHFO.toFixed(2)}</div>
+                  <div className="text-xs text-navy-400 dark:text-navy-500">ROB: {lastFuelROB.hfo}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">MGO</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{totalMGO.toFixed(2)}</div>
+                  <div className="text-xs text-navy-400 dark:text-navy-500">ROB: {lastFuelROB.mgo}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">LSFO</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{totalLSFO.toFixed(2)}</div>
+                  <div className="text-xs text-navy-400 dark:text-navy-500">ROB: {lastFuelROB.lsfo}</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Fresh Water Section */}
+            <div className="col-span-3 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 dark:from-blue-500/20 dark:to-cyan-500/20 
+                           rounded-xl p-3 border border-blue-200/50 dark:border-blue-700/30">
+              <div className="text-xs font-semibold text-blue-700 dark:text-blue-400 mb-2 uppercase tracking-wide">💧 Fresh Water (MT)</div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">Prod</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{Math.round(totalFWProd)}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">Cons</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{Math.round(totalFWCons)}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">ROB</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{lastFWROB === '–' ? '–' : Math.round(parseFloat(lastFWROB))}</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* NaOH Section */}
+            <div className="col-span-2 bg-gradient-to-br from-purple-500/10 to-indigo-500/10 dark:from-purple-500/20 dark:to-indigo-500/20 
+                           rounded-xl p-3 border border-purple-200/50 dark:border-purple-700/30">
+              <div className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-2 uppercase tracking-wide">🧪 NaOH (L)</div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">Cons</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{Math.round(totalNaOHCons)}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">ROB</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{lastNaOHROB === '–' ? '–' : Math.round(parseFloat(lastNaOHROB))}</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Engine Lub-Oil Section */}
+            <div className="col-span-2 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/20 dark:to-green-500/20 
+                           rounded-xl p-3 border border-emerald-200/50 dark:border-emerald-700/30">
+              <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mb-2 uppercase tracking-wide">🛢️ Engine Lub-Oil (L)</div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">Cons</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{lubeOil === '–' ? '–' : Math.round(parseFloat(lubeOil))}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">ROB</div>
+                  <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{lubeOilROBValue === '–' ? '–' : Math.round(parseFloat(lubeOilROBValue))}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MAIN APP
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    function VoyageTracker() {
+      const [voyages, setVoyages] = useState([]);
+      const [activeCruise, setActiveCruise] = useState(null);
+      const [view, setView] = useState('list');
+      const [showSettings, setShowSettings] = useState(false);
+      const [showVoyageEndModal, setShowVoyageEndModal] = useState(false);
+      const [showNewVoyageModal, setShowNewVoyageModal] = useState(false);
+      const [showImportCountersModal, setShowImportCountersModal] = useState(false);
+      const [pendingNewCruise, setPendingNewCruise] = useState(null); // Holds new cruise while import modal is open
+      const [pendingVoyageDetails, setPendingVoyageDetails] = useState(null); // Holds voyage details from NewVoyageModal
+      const [saveStatus, setSaveStatus] = useState('idle'); // idle, saving, saved, error
+      const [directoryHandle, setDirectoryHandle] = useState(null);
+      const [allLegsCollapsed, setAllLegsCollapsed] = useState(false);
+      const [recoveryData, setRecoveryData] = useState(null);
+      const [activeFilename, setActiveFilename] = useState(null); // Stores filename separately - doesn't change during editing
+      // Manual carry-over state
+      const [lastEditedPhase, setLastEditedPhase] = useState(null);
+      const [showCarryOverModal, setShowCarryOverModal] = useState(false);
+      const [carryOverTarget, setCarryOverTarget] = useState(null);
+      const saveTimeoutRef = useRef(null);
+      const backupIntervalRef = useRef(null);
+      const toast = useToast();
+
+      // Check for recovery data on mount
+      useEffect(() => {
+        const checkRecovery = async () => {
+          const backups = await getAllBackups();
+          if (backups.length > 0 && !directoryHandle) {
+            // Check for unsaved changes
+            const recent = backups.sort((a, b) => 
+              new Date(b.lastModified) - new Date(a.lastModified)
+            )[0];
+            
+            const lastModified = new Date(recent.lastModified);
+            const now = new Date();
+            const hourAgo = new Date(now - 60 * 60 * 1000);
+            
+            if (lastModified > hourAgo) {
+              setRecoveryData(recent);
+            }
+          }
+        };
+        checkRecovery();
+      }, []);
+
+      // Periodic backup
+      useEffect(() => {
+        if (activeCruise && view === 'edit') {
+          backupIntervalRef.current = setInterval(() => {
+            saveToBackup(activeCruise);
+          }, BACKUP_INTERVAL);
+        }
+        
+        return () => {
+          if (backupIntervalRef.current) {
+            clearInterval(backupIntervalRef.current);
+          }
+        };
+      }, [activeCruise, view]);
+
+      // Auto-save function
+      const autoSave = async (cruise) => {
+        if (!directoryHandle || !cruise) return;
+
+        setSaveStatus('saving');
+        
+        try {
+          // Use activeFilename (stable) - never changes during editing session
+          const filename = activeFilename || generateFilename(cruise);
+          const dataWithMeta = {
+            ...cruise,
+            lastModified: new Date().toISOString(),
+            version: APP_VERSION,
+          };
+          const dataStr = JSON.stringify(dataWithMeta, null, 2);
+          
+          const fileHandle = await directoryHandle.getFileHandle(filename, { create: true });
+          const writable = await fileHandle.createWritable();
+          await writable.write(dataStr);
+          await writable.close();
+          
+          // Also save to IndexedDB backup
+          await saveToBackup(dataWithMeta);
+          
+          setSaveStatus('saved');
+          setTimeout(() => setSaveStatus('idle'), 2000);
+        } catch (err) {
+          console.error('Auto-save failed:', err);
+          setSaveStatus('error');
+          toast.addToast('Save failed - check folder permissions', 'error');
+          setTimeout(() => setSaveStatus('idle'), 3000);
+        }
+      };
+
+      // Debounced auto-save
+      useEffect(() => {
+        if (activeCruise && view === 'edit') {
+          if (saveTimeoutRef.current) {
+            clearTimeout(saveTimeoutRef.current);
+          }
+          
+          saveTimeoutRef.current = setTimeout(() => {
+            autoSave(activeCruise);
+          }, AUTO_SAVE_DELAY);
+        }
+
+        return () => {
+          if (saveTimeoutRef.current) {
+            clearTimeout(saveTimeoutRef.current);
+          }
+        };
+      }, [activeCruise, view]);
+
+      // Keyboard shortcuts
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            if (activeCruise && view === 'edit') {
+              autoSave(activeCruise);
+              toast.addToast('Saved manually', 'success');
+            }
+          }
+        };
+        
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [activeCruise, view]);
+
+      const loadVoyagesFromDirectory = async () => {
+        try {
+          const handle = await window.showDirectoryPicker();
+          setDirectoryHandle(handle);
+          
+          const loadedVoyages = [];
+          for await (const entry of handle.values()) {
+            if (entry.kind === 'file' && entry.name.endsWith('.json')) {
+              try {
+                const file = await entry.getFile();
+                const text = await file.text();
+                const rawData = JSON.parse(text);
+                
+                // Validate and fix data
+                const { valid, errors, data: voyage } = validateCruiseData(rawData);
+                
+                if (!valid) {
+                  console.warn(`Validation issues in ${entry.name}:`, errors);
+                  toast.addToast(`Fixed issues in ${entry.name}`, 'warning');
+                }
+                
+                loadedVoyages.push({
+                  ...voyage,
+                  filename: entry.name,
+                });
+              } catch (err) {
+                console.error(`Failed to load ${entry.name}:`, err);
+                toast.addToast(`Failed to load ${entry.name}`, 'error');
+              }
+            }
+          }
+          
+          loadedVoyages.sort((a, b) => {
+            const dateA = a.startDate || '1900-01-01';
+            const dateB = b.startDate || '1900-01-01';
+            return dateB.localeCompare(dateA);
+          });
+          
+          setVoyages(loadedVoyages);
+          setRecoveryData(null);
+          toast.addToast(`Loaded ${loadedVoyages.length} voyages`, 'success');
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            console.error('Failed to load directory:', err);
+            toast.addToast('Failed to load voyage directory', 'error');
+          }
+        }
+      };
+
+      const createNewCruise = async () => {
+        try {
+          if (!directoryHandle) {
+            const handle = await window.showDirectoryPicker();
+            setDirectoryHandle(handle);
+          }
+          
+          // Show NewVoyageModal to get voyage details first
+          setShowNewVoyageModal(true);
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            console.error('Failed to select directory:', err);
+          }
+        }
+      };
+      
+      // Handle voyage details from NewVoyageModal
+      const handleNewVoyageCreate = (voyageDetails) => {
+        setShowNewVoyageModal(false);
+        
+        const newCruise = {
+          ...defaultCruise(),
+          name: voyageDetails.name,
+          startDate: voyageDetails.startDate,
+        };
+        
+        // Check if we have previous voyages to import from
+        if (voyages.length > 0) {
+          // Store the new cruise and show import modal
+          setPendingNewCruise(newCruise);
+          setPendingVoyageDetails(voyageDetails);
+          setShowImportCountersModal(true);
+        } else {
+          // No previous voyages, just create new cruise
+          setActiveCruise(newCruise);
+          setActiveFilename(generateFilename(newCruise));
+          setView('edit');
+          toast.addToast('New voyage created', 'success');
+        }
+      };
+      
+      // Handle starting fresh (no import)
+      const handleStartFresh = () => {
+        if (pendingNewCruise) {
+          setActiveCruise(pendingNewCruise);
+          setActiveFilename(generateFilename(pendingNewCruise));
+          setView('edit');
+          setPendingNewCruise(null);
+          setPendingVoyageDetails(null);
+          setShowImportCountersModal(false);
+          toast.addToast('New voyage created', 'success');
+        }
+      };
+      
+      // Handle importing counters from last voyage
+      const handleImportCounters = (countersToImport) => {
+        if (pendingNewCruise) {
+          // Add a leg with departure pre-filled
+          const newLeg = {
+            id: Date.now(),
+            departure: defaultReport('departure'),
+            arrival: defaultReport('arrival'),
+          };
+          
+          // Pre-fill the first phase's Start values with imported counters
+          if (newLeg.departure.phases.length > 0) {
+            const firstPhase = newLeg.departure.phases[0];
+            Object.entries(countersToImport).forEach(([key, value]) => {
+              if (firstPhase.equipment[key]) {
+                firstPhase.equipment[key].start = value;
+              }
+            });
+          }
+          
+          const cruiseWithLeg = {
+            ...pendingNewCruise,
+            legs: [newLeg],
+          };
+          
+          setActiveCruise(cruiseWithLeg);
+          setActiveFilename(generateFilename(cruiseWithLeg));
+          setView('edit');
+          setPendingNewCruise(null);
+          setPendingVoyageDetails(null);
+          setShowImportCountersModal(false);
+          
+          const importedCount = Object.keys(countersToImport).length;
+          toast.addToast(`Voyage created with ${importedCount} counter${importedCount !== 1 ? 's' : ''} imported`, 'success');
+        }
+      };
+      
+      // Get the last voyage for import
+      const getLastVoyage = () => {
+        if (voyages.length === 0) return null;
+        // Voyages are already sorted by date (newest first)
+        return voyages[0];
+      };
+
+      const openVoyage = (voyage) => {
+        setActiveCruise(voyage);
+        setActiveFilename(voyage.filename || generateFilename(voyage)); // Lock the filename
+        setView('edit');
+      };
+
+      const recoverVoyage = () => {
+        if (recoveryData) {
+          setActiveCruise(recoveryData);
+          setActiveFilename(recoveryData.filename || generateFilename(recoveryData)); // Lock the filename
+          setView('edit');
+          setRecoveryData(null);
+          toast.addToast('Voyage recovered from backup', 'success');
+        }
+      };
+
+      const dismissRecovery = async () => {
+        if (recoveryData) {
+          await deleteBackup(recoveryData.id);
+          setRecoveryData(null);
+        }
+      };
+
+      const updateCruise = (updated) => {
+        const withTimestamp = {
+          ...updated,
+          lastModified: new Date().toISOString(),
+        };
+        setActiveCruise(withTimestamp);
+        
+        setVoyages(prevVoyages => {
+          const index = prevVoyages.findIndex(v => v.id === updated.id);
+          if (index >= 0) {
+            const newVoyages = [...prevVoyages];
+            newVoyages[index] = withTimestamp;
+            return newVoyages;
+          }
+          return prevVoyages;
+        });
+      };
+
+      const addLeg = () => {
+        if (!activeCruise) return;
+        const newLeg = { id: Date.now(), departure: defaultReport('departure'), arrival: defaultReport('arrival') };
+        
+        // Counter carry-over from last leg
+        const lastLeg = activeCruise.legs[activeCruise.legs.length - 1];
+        if (lastLeg?.arrival?.phases) {
+          const lastPhase = lastLeg.arrival.phases.find(p => p.type === PHASE_TYPES.STANDBY) 
+                         || lastLeg.arrival.phases[lastLeg.arrival.phases.length - 1];
+          if (lastPhase?.equipment && newLeg.departure.phases[0]) {
+            Object.keys(newLeg.departure.phases[0].equipment).forEach(key => {
+              if (lastPhase.equipment[key]?.end) {
+                newLeg.departure.phases[0].equipment[key].start = lastPhase.equipment[key].end;
+              }
+            });
+          }
+        }
+        
+        updateCruise({ ...activeCruise, legs: [...activeCruise.legs, newLeg] });
+        toast.addToast(lastLeg ? 'New leg added with counters from previous leg' : 'New leg added', 'success');
+      };
+
+      const updateLeg = (legIndex, newLeg) => {
+        const newLegs = [...activeCruise.legs];
+        newLegs[legIndex] = newLeg;
+        updateCruise({ ...activeCruise, legs: newLegs });
+      };
+
+      const deleteLeg = (legIndex) => {
+        const newLegs = activeCruise.legs.filter((_, i) => i !== legIndex);
+        updateCruise({ ...activeCruise, legs: newLegs });
+        toast.addToast('Leg deleted', 'info');
+      };
+
+      const handleSaveDensities = (newDensities) => {
+        updateCruise({ ...activeCruise, densities: newDensities });
+      };
+
+      const handleVoyageEnd = (voyageEndData) => {
+        updateCruise({ ...activeCruise, voyageEnd: voyageEndData });
+        setShowVoyageEndModal(false);
+      };
+
+      // ═══════════════════════════════════════════════════════════════════════
+      // MANUAL CARRY-OVER LOGIC
+      // ═══════════════════════════════════════════════════════════════════════
+      
+      const findNextPhase = (legIdx, repType, phaseIdx) => {
+        if (!activeCruise) return null;
+        const leg = activeCruise.legs[legIdx];
+        if (!leg) return null;
+        const rep = repType === 'departure' ? leg.departure : leg.arrival;
+        if (!rep || !rep.phases) return null;
+        
+        // Next phase in same report
+        if (phaseIdx < rep.phases.length - 1) {
+          const next = rep.phases[phaseIdx + 1];
+          return { legIndex: legIdx, reportType: repType, phaseIndex: phaseIdx + 1, phaseName: next.name || 'Next Phase',
+            equipment: { dg12: next.equipment.dg12?.start || '', dg4: next.equipment.dg4?.start || '', dg3: next.equipment.dg3?.start || '', boiler1: next.equipment.boiler1?.start || '', boiler2: next.equipment.boiler2?.start || '' }
+          };
+        }
+        // Departure last phase -> Arrival first phase
+        if (repType === 'departure' && leg.arrival?.phases?.length > 0) {
+          const next = leg.arrival.phases[0];
+          return { legIndex: legIdx, reportType: 'arrival', phaseIndex: 0, phaseName: next.name || 'First Arrival Phase',
+            equipment: { dg12: next.equipment.dg12?.start || '', dg4: next.equipment.dg4?.start || '', dg3: next.equipment.dg3?.start || '', boiler1: next.equipment.boiler1?.start || '', boiler2: next.equipment.boiler2?.start || '' }
+          };
+        }
+        // Arrival last phase -> Next leg first departure phase  
+        if (repType === 'arrival' && legIdx < activeCruise.legs.length - 1) {
+          const nextLeg = activeCruise.legs[legIdx + 1];
+          if (nextLeg?.departure?.phases?.length > 0) {
+            const next = nextLeg.departure.phases[0];
+            return { legIndex: legIdx + 1, reportType: 'departure', phaseIndex: 0, phaseName: next.name || 'Next Leg First Phase',
+              equipment: { dg12: next.equipment.dg12?.start || '', dg4: next.equipment.dg4?.start || '', dg3: next.equipment.dg3?.start || '', boiler1: next.equipment.boiler1?.start || '', boiler2: next.equipment.boiler2?.start || '' }
+            };
+          }
+        }
+        return null;
+      };
+      
+      const handleOpenCarryOver = () => {
+        if (!lastEditedPhase) { toast.addToast('Edit END values in a phase first', 'warning'); return; }
+        const target = findNextPhase(lastEditedPhase.legIndex, lastEditedPhase.reportType, lastEditedPhase.phaseIndex);
+        if (target) { setCarryOverTarget(target); setShowCarryOverModal(true); }
+        else { toast.addToast('No next phase found to carry over to', 'warning'); }
+      };
+      
+      const handleConfirmCarryOver = (counters) => {
+        if (!carryOverTarget || !activeCruise) { setShowCarryOverModal(false); return; }
+        const { legIndex, reportType, phaseIndex } = carryOverTarget;
+        const newLegs = activeCruise.legs.map((leg, li) => {
+          if (li !== legIndex) return leg;
+          const rep = reportType === 'departure' ? leg.departure : leg.arrival;
+          const newPhases = rep.phases.map((phase, pi) => {
+            if (pi !== phaseIndex) return phase;
+            const newEq = { ...phase.equipment };
+            Object.entries(counters).forEach(([k, v]) => { if (v && newEq[k]) newEq[k] = { ...newEq[k], start: v }; });
+            return { ...phase, equipment: newEq };
+          });
+          return reportType === 'departure' ? { ...leg, departure: { ...rep, phases: newPhases } } : { ...leg, arrival: { ...rep, phases: newPhases } };
+        });
+        updateCruise({ ...activeCruise, legs: newLegs });
+        const count = Object.keys(counters).length;
+        toast.addToast(count + ' counter(s) carried over', 'success');
+        setShowCarryOverModal(false);
+        setLastEditedPhase(null);
+      };
+      
+      const trackPhaseEnd = (legIdx, repType, phaseIdx, phaseName, equipment) => {
+        const ends = { dg12: equipment.dg12?.end || '', dg4: equipment.dg4?.end || '', dg3: equipment.dg3?.end || '', boiler1: equipment.boiler1?.end || '', boiler2: equipment.boiler2?.end || '' };
+        const hasAnyEnd = Object.values(ends).some(v => v && v !== '');
+        if (hasAnyEnd) {
+          setLastEditedPhase({ legIndex: legIdx, reportType: repType, phaseIndex: phaseIdx, phaseName: phaseName || 'Phase', equipment: ends });
+        }
+      };
+
+      const densities = activeCruise?.densities || DEFAULT_DENSITIES;
+      const isFileSystemSupported = 'showDirectoryPicker' in window;
+
+      const getSaveStatusDisplay = () => {
+        switch (saveStatus) {
+          case 'saving': return { text: 'Saving...', class: 'bg-gold-500', dot: 'bg-gold-300' };
+          case 'saved': return { text: 'Saved', class: 'bg-green-500', dot: 'bg-green-300 connected' };
+          case 'error': return { text: 'Error', class: 'bg-red-500', dot: 'bg-red-300 error' };
+          default: return directoryHandle 
+            ? { text: 'Connected', class: 'bg-navy-600 dark:bg-navy-700', dot: 'bg-green-400 connected' }
+            : { text: 'No folder', class: 'bg-gold-500', dot: 'bg-gold-300 disconnected' };
+        }
+      };
+
+      const status = getSaveStatusDisplay();
+
+      return (
+        <div className="min-h-screen">
+          <SettingsModal 
+            isOpen={showSettings}
+            onClose={() => setShowSettings(false)}
+            densities={densities}
+            onSave={handleSaveDensities}
+          />
+
+          {showVoyageEndModal && activeCruise && (
+            <VoyageEndModal
+              cruise={activeCruise}
+              onClose={() => setShowVoyageEndModal(false)}
+              onSave={handleVoyageEnd}
+              densities={densities}
+            />
+          )}
+
+          {showNewVoyageModal && (
+            <NewVoyageModal
+              isOpen={showNewVoyageModal}
+              onClose={() => setShowNewVoyageModal(false)}
+              onCreate={handleNewVoyageCreate}
+            />
+          )}
+
+          {showImportCountersModal && (
+            <ImportCountersModal
+              isOpen={showImportCountersModal}
+              onClose={() => {
+                setShowImportCountersModal(false);
+                setPendingNewCruise(null);
+                setPendingVoyageDetails(null);
+              }}
+              onStartFresh={handleStartFresh}
+              onImport={handleImportCounters}
+              lastVoyage={getLastVoyage()}
+            />
+          )}
+
+          {/* Manual Carry-Over Modal */}
+          {showCarryOverModal && lastEditedPhase && carryOverTarget && (
+            <ManualCarryOverModal 
+              isOpen={showCarryOverModal} 
+              onClose={() => setShowCarryOverModal(false)} 
+              onConfirm={handleConfirmCarryOver} 
+              sourceInfo={lastEditedPhase} 
+              targetInfo={carryOverTarget} 
+            />
+          )}
+          
+          {/* Floating Carry-Over Button - ALWAYS visible in edit mode */}
+          {view === 'edit' && activeCruise && (
+            <FloatingCarryOverButton 
+              onClick={handleOpenCarryOver} 
+              disabled={!lastEditedPhase} 
+              sourceInfo={lastEditedPhase} 
+            />
+          )}
+
+          {/* Recovery Banner */}
+          {recoveryData && (
+            <div className="recovery-banner px-4 py-3">
+              <div className="max-w-6xl mx-auto flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Icons.Database />
+                  <div>
+                    <span className="font-semibold">Unsaved work found:</span> {recoveryData.name || 'Unnamed Voyage'}
+                    <span className="text-sm opacity-80 ml-2">
+                      (Last modified: {new Date(recoveryData.lastModified).toLocaleString()})
+                    </span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={recoverVoyage}
+                    className="px-4 py-1.5 bg-white/90 hover:bg-white text-amber-800 rounded-lg font-semibold text-sm transition-colors"
+                  >
+                    Recover
+                  </button>
+                  <button 
+                    onClick={dismissRecovery}
+                    className="px-4 py-1.5 bg-amber-700/50 hover:bg-amber-700 text-white rounded-lg font-semibold text-sm transition-colors"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Header */}
+          <header className="glass sticky top-0 z-50 border-b border-navy-200/50 dark:border-navy-700/50">
+            <div className="max-w-6xl mx-auto px-4 py-3">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-ocean-400 to-ocean-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-ocean-500/25">
+                    <Icons.Ship />
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-display font-bold text-navy-800 dark:text-white">Voyage Tracker</h1>
+                    <p className="text-xs text-navy-500 dark:text-navy-400">Engine Department • v{APP_VERSION}</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3 items-center">
+                  {/* Status Badge */}
+                  <div className={`${status.class} text-white px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-2`}>
+                    <span className={`status-dot ${status.dot}`}></span>
+                    {status.text}
+                  </div>
+                  
+                  {view === 'edit' && activeCruise && (
+                    <>
+                      <button 
+                        onClick={() => { autoSave(activeCruise); toast.addToast('Saved', 'success'); }}
+                        className="p-2.5 bg-ocean-500 hover:bg-ocean-600 text-white rounded-xl transition-colors shadow-lg shadow-ocean-500/25"
+                        title="Save Now (Ctrl+S)"
+                      >
+                        <Icons.Save />
+                      </button>
+                      <button 
+                        onClick={() => setShowSettings(true)} 
+                        className="p-2.5 bg-navy-100 dark:bg-navy-700 hover:bg-navy-200 dark:hover:bg-navy-600 
+                                   text-navy-600 dark:text-navy-200 rounded-xl transition-colors"
+                        title="Density Settings"
+                      >
+                        <Icons.Settings />
+                      </button>
+                    </>
+                  )}
+                  
+                  <ThemeToggle />
+                </div>
+              </div>
+            </div>
+          </header>
+
+          {/* Browser Support Warning */}
+          {!isFileSystemSupported && (
+            <div className="max-w-6xl mx-auto px-4 py-3">
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl px-4 py-3 text-sm text-red-800 dark:text-red-200 flex items-center gap-3">
+                <span className="text-xl">⚠️</span>
+                <div>
+                  <strong>Browser Not Supported:</strong> This app requires Chrome or Edge with File System Access API.
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Density Bar */}
+          <div className="max-w-6xl mx-auto px-4 py-2">
+            <div className="glass-card rounded-xl px-4 py-2.5 text-sm flex flex-wrap gap-x-6 gap-y-1 items-center">
+              <span className="font-semibold text-navy-700 dark:text-navy-200">Current Densities:</span>
+              <span className="text-navy-600 dark:text-navy-300">HFO: <b className="font-mono">{densities.HFO}</b></span>
+              <span className="text-navy-600 dark:text-navy-300">MGO: <b className="font-mono">{densities.MGO}</b></span>
+              <span className="text-navy-600 dark:text-navy-300">LSFO: <b className="font-mono">{densities.LSFO}</b></span>
+              <span className="text-navy-400 dark:text-navy-500 ml-auto text-xs">
+                Counters in m³ • Summaries in MT • DG3: MGO/LSFO • Boilers: MGO only • Auto-saves
+              </span>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <main className="max-w-6xl mx-auto px-4 py-6">
+            {view === 'list' ? (
+              <div className="animate-fade-in">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-display font-bold text-navy-800 dark:text-white">Voyage Files</h2>
+                  <div className="flex gap-3">
+                    <button 
+                      onClick={loadVoyagesFromDirectory} 
+                      className="px-5 py-2.5 bg-navy-100 dark:bg-navy-700 hover:bg-navy-200 dark:hover:bg-navy-600 
+                                 text-navy-700 dark:text-navy-200 rounded-xl font-semibold flex items-center gap-2 transition-colors"
+                    >
+                      <Icons.Folder /> Select Folder
+                    </button>
+                    <button 
+                      onClick={createNewCruise} 
+                      className="px-5 py-2.5 btn-primary text-white rounded-xl font-semibold flex items-center gap-2"
+                    >
+                      <Icons.Plus /> New Voyage
+                    </button>
+                  </div>
+                </div>
+                
+                {!directoryHandle && voyages.length === 0 ? (
+                  <div className="glass-card rounded-2xl py-16 text-center">
+                    <div className="text-6xl mb-6">📂</div>
+                    <p className="text-xl font-display font-semibold text-navy-700 dark:text-navy-200 mb-2">
+                      No folder selected
+                    </p>
+                    <p className="text-navy-500 dark:text-navy-400">
+                      Use <span className="font-semibold text-ocean-600 dark:text-ocean-400">"Select Folder"</span> above to open your voyage folder,<br/>
+                      or click <span className="font-semibold text-ocean-600 dark:text-ocean-400">"New Voyage"</span> to start fresh
+                    </p>
+                  </div>
+                ) : voyages.length === 0 ? (
+                  <div className="glass-card rounded-2xl py-16 text-center">
+                    <div className="text-6xl mb-6">🚢</div>
+                    <p className="text-xl font-display font-semibold text-navy-700 dark:text-navy-200 mb-2">
+                      No voyage files found
+                    </p>
+                    <p className="text-navy-500 dark:text-navy-400">
+                      Click "New Voyage" to create your first voyage
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {voyages.map((voyage, index) => (
+                      <div 
+                        key={voyage.id} 
+                        className="voyage-card glass-card rounded-2xl p-5 flex justify-between items-center hover:shadow-xl 
+                                   transition-all cursor-pointer group animate-slide-up"
+                        style={{ animationDelay: `${index * 0.05}s` }}
+                        onClick={() => openVoyage(voyage)}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-gradient-to-br from-ocean-400 to-ocean-600 rounded-xl 
+                                          flex items-center justify-center text-white text-xl shadow-lg shadow-ocean-500/25">
+                            🚢
+                          </div>
+                          <div>
+                            <h3 className="font-display font-bold text-lg text-navy-800 dark:text-white flex items-center gap-2">
+                              {voyage.name || 'Unnamed Voyage'}
+                              {voyage.voyageEnd && (
+                                <span className="badge bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+                                  ✓ Completed
+                                </span>
+                              )}
+                            </h3>
+                            <p className="text-sm text-navy-500 dark:text-navy-400">
+                              {voyage.startDate || 'No date'} • {voyage.vessel} • {voyage.legs.length} legs • {calcCruiseTotal(voyage).toFixed(1)} MT
+                            </p>
+                            <p className="text-xs text-navy-400 dark:text-navy-500 mt-1 font-mono">
+                              📂" {voyage.filename}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-ocean-500 group-hover:translate-x-1 transition-transform">
+                          <Icons.ArrowRight />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="animate-fade-in">
+                <button 
+                  onClick={() => { setView('list'); setActiveFilename(null); }} 
+                  className="mb-4 text-ocean-600 dark:text-ocean-400 hover:text-ocean-700 dark:hover:text-ocean-300 
+                             font-semibold text-sm flex items-center gap-1 transition-colors"
+                >
+                  ← Back to Voyages
+                </button>
+
+                {activeCruise && (
+                  <>
+                    {/* Cruise Info Card */}
+                    <div className="glass-card rounded-2xl p-5 mb-6">
+                      <div className="grid grid-cols-4 gap-4">
+                        <div>
+                          <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">
+                            Cruise Name
+                          </label>
+                          <input type="text" value={activeCruise.name}
+                            onChange={(e) => updateCruise({ ...activeCruise, name: e.target.value })}
+                            className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                                       rounded-xl text-sm input-field font-medium"
+                            placeholder="Singapore to Hong Kong" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">
+                            Vessel
+                          </label>
+                          <input type="text" value={activeCruise.vessel}
+                            onChange={(e) => updateCruise({ ...activeCruise, vessel: e.target.value })}
+                            className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                                       rounded-xl text-sm input-field" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">
+                            Start Date
+                          </label>
+                          <input type="date" value={activeCruise.startDate}
+                            onChange={(e) => updateCruise({ ...activeCruise, startDate: e.target.value })}
+                            className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                                       rounded-xl text-sm input-field" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">
+                            End Date
+                          </label>
+                          <input type="date" value={activeCruise.endDate}
+                            onChange={(e) => updateCruise({ ...activeCruise, endDate: e.target.value })}
+                            className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 
+                                       rounded-xl text-sm input-field" />
+                        </div>
+                      </div>
+                      <div className="mt-3 text-xs text-navy-400 dark:text-navy-500 font-mono flex items-center gap-2">
+                        <Icons.Save /> Saving to: {activeFilename}
+                      </div>
+                    </div>
+
+                    <CruiseSummary cruise={activeCruise} densities={densities} />
+
+                    {/* Notes shown if voyage completed and has notes */}
+                    {activeCruise.voyageEnd?.notes && (
+                      <div className="glass-card rounded-xl px-5 py-3 mb-6 bg-gradient-to-r from-green-50/50 to-emerald-50/50 
+                                      dark:from-green-900/10 dark:to-emerald-900/10 border border-green-200/50 dark:border-green-800/30">
+                        <span className="text-sm font-semibold text-navy-600 dark:text-navy-300">Notes:</span>
+                        <span className="text-sm text-navy-600 dark:text-navy-400 ml-2">{activeCruise.voyageEnd.notes}</span>
+                      </div>
+                    )}
+
+                    {/* Legs Header */}
+                    <div className="flex justify-between items-center mb-4">
+                      <h2 className="text-xl font-display font-bold text-navy-800 dark:text-white">Voyage Legs</h2>
+                      <div className="flex gap-3">
+                        <button 
+                          onClick={() => setAllLegsCollapsed(!allLegsCollapsed)}
+                          className="px-4 py-2 bg-navy-100 dark:bg-navy-700 hover:bg-navy-200 dark:hover:bg-navy-600 
+                                     text-navy-600 dark:text-navy-200 rounded-xl font-medium text-sm transition-colors flex items-center gap-2"
+                        >
+                          {allLegsCollapsed ? <><Icons.ChevronDown /> Expand All</> : <><Icons.ChevronRight /> Collapse All</>}
+                        </button>
+                        {activeCruise.voyageEnd ? (
+                          <>
+                            <button 
+                              onClick={() => {
+                                if (confirm('Reopen this voyage for editing? This will clear the voyage end data.')) {
+                                  updateCruise({ ...activeCruise, voyageEnd: null });
+                                  toast.addToast('Voyage reopened for editing', 'success');
+                                }
+                              }}
+                              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-semibold text-sm transition-all shadow-lg shadow-amber-500/25 flex items-center gap-2"
+                              title="Clear voyage end data and reopen for editing"
+                            >
+                              <Icons.Edit /> Reopen Voyage
+                            </button>
+                            <button 
+                              onClick={() => setShowVoyageEndModal(true)}
+                              className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white rounded-xl font-semibold text-sm transition-all shadow-lg shadow-emerald-500/25 flex items-center gap-2"
+                            >
+                              <Icons.Flag /> Edit Voyage End
+                            </button>
+                          </>
+                        ) : (
+                          <button 
+                            onClick={() => setShowVoyageEndModal(true)}
+                            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all shadow-lg shadow-purple-500/25 flex items-center gap-2"
+                          >
+                            <Icons.Flag /> End Voyage
+                          </button>
+                        )}
+                        <button 
+                          onClick={addLeg} 
+                          className="px-4 py-2 btn-primary text-white rounded-xl font-semibold text-sm flex items-center gap-2"
+                        >
+                          <Icons.Plus /> Add Leg
+                        </button>
+                      </div>
+                    </div>
+
+                    {activeCruise.legs.map((leg, idx) => (
+                      <LegSection
+                        key={leg.id}
+                        leg={leg}
+                        legIndex={idx}
+                        onChange={(newLeg) => updateLeg(idx, newLeg)}
+                        onDelete={() => deleteLeg(idx)}
+                        densities={densities}
+                        externalCollapsed={allLegsCollapsed}
+                        onPhaseEnd={trackPhaseEnd}
+                      />
+                    ))}
+
+                    {activeCruise.legs.length === 0 && (
+                      <div className="glass-card rounded-2xl py-12 text-center">
+                        <div className="text-5xl mb-4">🚢</div>
+                        <p className="text-navy-500 dark:text-navy-400">No legs yet. Click "Add Leg" to add voyage data.</p>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+          </main>
+
+          {/* Footer */}
+          <footer className="text-center py-6 text-sm text-navy-400 dark:text-navy-500">
+            <div className="flex items-center justify-center gap-2">
+              <span>Auto-saves to network folder</span>
+              <span>•</span>
+              <span>Backup to IndexedDB</span>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <span className={`status-dot ${directoryHandle ? 'connected' : 'disconnected'}`}></span>
+                {directoryHandle ? 'Connected' : 'No folder selected'}
+              </span>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // APP WRAPPER WITH PROVIDERS
+    // ═══════════════════════════════════════════════════════════════════════════
+    
+    function App() {
+      return (
+        <ToastProvider>
+          <VoyageTracker />
+        </ToastProvider>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
