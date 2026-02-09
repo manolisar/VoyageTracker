@@ -82,112 +82,125 @@ const VoyageEndModal = ({ cruise, onClose, onSave, densities }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content w-full max-w-3xl animate-scale-in" onClick={e => e.stopPropagation()}>
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-5 rounded-t-2xl">
-          <div className="flex items-center gap-3">
-            <Icons.Flag />
-            <div>
-              <h2 className="text-xl font-display font-bold">Voyage End Summary</h2>
-              <p className="text-sm text-white/80">{cruise.name} {'\u2022'} {cruise.vessel}</p>
-            </div>
+        <div className="modal-head flex items-center gap-3">
+          <Icons.Flag />
+          <div>
+            <h2>Voyage End Summary</h2>
+            <p>{cruise.name} {'\u2022'} {cruise.vessel}</p>
           </div>
         </div>
 
-        <div className="p-6 space-y-6 dark:bg-navy-800">
-          <div className="bg-navy-50 dark:bg-navy-900/50 rounded-2xl p-5">
-            <h3 className="font-display font-semibold text-navy-700 dark:text-navy-200 mb-4">Total Fuel Consumption</h3>
-            <div className="grid grid-cols-4 gap-4">
-              {[
-                { label: 'HFO', value: totalHFO, color: 'from-amber-500 to-amber-600' },
-                { label: 'MGO', value: totalMGO, color: 'from-emerald-500 to-emerald-600' },
-                { label: 'LSFO', value: totalLSFO, color: 'from-blue-500 to-blue-600' },
-                { label: 'Total', value: totalFuel, color: 'from-ocean-500 to-ocean-600' },
-              ].map(item => (
-                <div key={item.label} className={`bg-gradient-to-br ${item.color} rounded-xl p-4 text-center text-white`}>
-                  <div className="text-2xl font-display font-bold">{item.value.toFixed(2)}</div>
-                  <div className="text-xs opacity-80">{item.label} (MT)</div>
+        <div className="p-6 space-y-5 dark:bg-navy-800">
+          <div className="cat-card fuel" style={{ gridColumn: 'unset' }}>
+            <div className="cat-label">Total Fuel Consumption</div>
+            <div className="cat-body">
+              <div className="fuel-cols" style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr' }}>
+                <div className="fuel-col hfo">
+                  <div className="fc-type"><span className="fc-dot"></span>HFO</div>
+                  <div className="fc-big mono">{totalHFO.toFixed(2)}</div>
+                  <div className="fc-rob">MT</div>
                 </div>
-              ))}
+                <div className="fuel-col mgo">
+                  <div className="fc-type"><span className="fc-dot"></span>MGO</div>
+                  <div className="fc-big mono">{totalMGO.toFixed(2)}</div>
+                  <div className="fc-rob">MT</div>
+                </div>
+                <div className="fuel-col lsfo">
+                  <div className="fc-type"><span className="fc-dot"></span>LSFO</div>
+                  <div className="fc-big mono">{totalLSFO.toFixed(2)}</div>
+                  <div className="fc-rob">MT</div>
+                </div>
+                <div className="fuel-col" style={{ textAlign: 'center' }}>
+                  <div className="fc-type" style={{ color: 'var(--color-text)' }}>{'\u03A3'} Total</div>
+                  <div className="fc-big mono" style={{ color: 'var(--color-text)' }}>{totalFuel.toFixed(2)}</div>
+                  <div className="fc-rob">MT</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="bg-gold-50 dark:bg-gold-900/20 border border-gold-200 dark:border-gold-800/50 rounded-xl p-5">
-            <h3 className="text-sm font-semibold text-navy-700 dark:text-navy-200 mb-3">{'\uD83D\uDEE2\uFE0F'} Engine Lub-Oil (Liters)</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs text-navy-500 dark:text-navy-400 mb-1">Consumption *</label>
-                <input type="number" step="1" value={lubeOilCons} onChange={(e) => setLubeOilCons(e.target.value)}
-                  className="w-full px-4 py-3 bg-white dark:bg-navy-800 border border-gold-300 dark:border-gold-700 rounded-xl font-mono text-lg input-field" placeholder="0" />
-              </div>
-              <div>
-                <label className="block text-xs text-navy-500 dark:text-navy-400 mb-1">R.O.B.</label>
-                <input type="number" step="1" value={lubeOilROB} onChange={(e) => setLubeOilROB(e.target.value)}
-                  className="w-full px-4 py-3 bg-white dark:bg-navy-800 border border-gold-300 dark:border-gold-700 rounded-xl font-mono text-lg input-field" placeholder="0" />
+          <div className="cat-card lube">
+            <div className="cat-label">Engine Lub-Oil (Liters)</div>
+            <div className="cat-body">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="form-label">Consumption *</label>
+                  <input type="number" step="1" value={lubeOilCons} onChange={(e) => setLubeOilCons(e.target.value)}
+                    className="form-input font-mono text-[1rem]" placeholder="0" />
+                </div>
+                <div>
+                  <label className="form-label">R.O.B.</label>
+                  <input type="number" step="1" value={lubeOilROB} onChange={(e) => setLubeOilROB(e.target.value)}
+                    className="form-input font-mono text-[1rem]" placeholder="0" />
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-5">
-            <div className="bg-navy-50 dark:bg-navy-900/50 rounded-xl p-4">
-              <h3 className="font-semibold text-navy-700 dark:text-navy-200 mb-3">NaOH Consumption</h3>
-              <div className="bg-white dark:bg-navy-800 rounded-xl p-4 text-center">
-                <div className="text-3xl font-display font-bold text-navy-800 dark:text-white">{totalNaOHCons.toFixed(1)}</div>
-                <div className="text-sm text-navy-500 dark:text-navy-400">Total (Liters)</div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="cat-card chem">
+              <div className="cat-label">NaOH Consumption</div>
+              <div className="cat-body text-center py-2">
+                <div className="text-[2rem] font-extrabold mono" style={{ color: 'var(--color-chem)' }}>{totalNaOHCons.toFixed(1)}</div>
+                <div className="text-[0.6rem] text-[var(--color-dim)]">Total (Liters)</div>
               </div>
             </div>
-            <div className="bg-navy-50 dark:bg-navy-900/50 rounded-xl p-4">
-              <h3 className="font-semibold text-navy-700 dark:text-navy-200 mb-3">Fresh Water</h3>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="cat-card water">
+              <div className="cat-label">Fresh Water</div>
+              <div className="cat-body">
+                <div className="water-rows">
+                  {[
+                    { label: 'Bunkered', value: totalFWBunkered },
+                    { label: 'Prod.', value: totalFWProd },
+                    { label: 'Cons.', value: totalFWCons },
+                  ].map(item => (
+                    <div key={item.label} className="water-row">
+                      <span className="wr-label">{item.label}</span>
+                      <span className="wr-val mono">{item.value.toFixed(1)} MT</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="cat-card chem">
+            <div className="cat-label">AEP Operating Hours</div>
+            <div className="cat-body">
+              <div className="grid grid-cols-2 gap-4">
                 {[
-                  { label: 'Bunkered', value: totalFWBunkered },
-                  { label: 'Prod.', value: totalFWProd },
-                  { label: 'Cons.', value: totalFWCons },
+                  { label: 'Open Loop', value: totalOpenLoop },
+                  { label: 'Closed Loop', value: totalClosedLoop },
                 ].map(item => (
-                  <div key={item.label} className="bg-white dark:bg-navy-800 rounded-lg p-3 text-center">
-                    <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{item.value.toFixed(1)}</div>
-                    <div className="text-xs text-navy-500 dark:text-navy-400">{item.label} (MT)</div>
+                  <div key={item.label} className="text-center py-2">
+                    <div className="text-[1.5rem] font-extrabold mono" style={{ color: 'var(--color-chem)' }}>{item.value.toFixed(1)}</div>
+                    <div className="text-[0.6rem] text-[var(--color-dim)]">{item.label} (hrs)</div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="bg-navy-50 dark:bg-navy-900/50 rounded-xl p-4">
-            <h3 className="font-semibold text-navy-700 dark:text-navy-200 mb-3">AEP Operating Hours</h3>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'Open Loop', value: totalOpenLoop },
-                { label: 'Closed Loop', value: totalClosedLoop },
-              ].map(item => (
-                <div key={item.label} className="bg-white dark:bg-navy-800 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-display font-bold text-navy-800 dark:text-white">{item.value.toFixed(1)}</div>
-                  <div className="text-sm text-navy-500 dark:text-navy-400">{item.label} (hrs)</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">Chief Engineer / Signature</label>
+              <label className="form-label">Chief Engineer / Signature</label>
               <input type="text" value={engineer} onChange={(e) => setEngineer(e.target.value)}
-                className="w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl input-field" placeholder="Enter name" />
+                className="form-input" placeholder="Enter name" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">Notes / Remarks</label>
+              <label className="form-label">Notes / Remarks</label>
               <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows="3"
-                className="w-full px-4 py-3 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl input-field resize-none" placeholder="Additional notes or remarks..." />
+                className="form-input resize-none" placeholder="Additional notes or remarks..." />
             </div>
           </div>
 
           <div className="flex gap-3 pt-2">
             <button onClick={handleSave}
-              className="flex-1 px-6 py-3.5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700
-                         text-white rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/25">
+              className="flex-1 px-6 py-2.5 btn-success text-white rounded-lg font-semibold text-[0.78rem] transition-all flex items-center justify-center gap-2">
               <Icons.Check /> Complete Voyage
             </button>
             <button onClick={onClose}
-              className="px-6 py-3.5 bg-navy-100 dark:bg-navy-700 hover:bg-navy-200 dark:hover:bg-navy-600
-                         text-navy-700 dark:text-navy-200 rounded-xl font-semibold transition-colors">
+              className="px-6 py-2.5 btn-flat rounded-lg font-semibold text-[0.78rem]">
               Cancel
             </button>
           </div>

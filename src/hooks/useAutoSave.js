@@ -15,6 +15,7 @@ export const useAutoSave = (activeCruise, view, directoryHandle, activeFilename,
       const filename = activeFilename || generateFilename(cruise);
       const dataWithMeta = {
         ...cruise,
+        filename,
         lastModified: new Date().toISOString(),
         version: APP_VERSION,
       };

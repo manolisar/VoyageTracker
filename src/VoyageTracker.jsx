@@ -131,10 +131,15 @@ export default function VoyageTracker() {
   const handleNewVoyageCreate = (voyageDetails) => {
     setShowNewVoyageModal(false);
 
+    const safeFrom = voyageDetails.fromPort.replace(/[^a-z0-9]/gi, '_');
+    const safeTo = voyageDetails.toPort.replace(/[^a-z0-9]/gi, '_');
+    const filename = `${voyageDetails.startDate}_${safeFrom}_to_${safeTo}.json`;
+
     const newCruise = {
       ...defaultCruise(),
       name: voyageDetails.name,
       startDate: voyageDetails.startDate,
+      filename,
     };
 
     if (voyages.length > 0) {
@@ -143,7 +148,7 @@ export default function VoyageTracker() {
       setShowImportCountersModal(true);
     } else {
       setActiveCruise(newCruise);
-      setActiveFilename(generateFilename(newCruise));
+      setActiveFilename(filename);
       setView('edit');
       toast.addToast('New voyage created', 'success');
     }

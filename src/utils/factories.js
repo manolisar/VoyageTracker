@@ -55,6 +55,6 @@ export const defaultCruise = () => {
     voyageEnd: null,
     lastModified: new Date().toISOString(),
     version: APP_VERSION,
-    filename: `${date}_voyage_${id}.json`,
+    filename: null,
   };
 };

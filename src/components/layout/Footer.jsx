@@ -1,5 +1,5 @@
 const Footer = ({ directoryHandle }) => (
-  <footer className="text-center py-6 text-sm text-navy-400 dark:text-navy-500">
+  <footer className="app-footer text-center py-6">
     <div className="flex items-center justify-center gap-2">
       <span>Auto-saves to network folder</span>
       <span>&bull;</span>

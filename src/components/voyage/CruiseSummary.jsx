@@ -25,7 +25,6 @@ const CruiseSummary = ({ cruise, densities }) => {
         if (report.freshWater.production) totalFWProd += parseFloat(report.freshWater.production);
         if (report.aep.alkaliCons) totalNaOHCons += parseFloat(report.aep.alkaliCons);
 
-        // Get last ROB values
         if (report.rob.hfo) lastFuelROB.hfo = parseFloat(report.rob.hfo).toFixed(2);
         if (report.rob.mgo) lastFuelROB.mgo = parseFloat(report.rob.mgo).toFixed(2);
         if (report.rob.lsfo) lastFuelROB.lsfo = parseFloat(report.rob.lsfo).toFixed(2);
@@ -40,109 +39,82 @@ const CruiseSummary = ({ cruise, densities }) => {
   const lubeOilROBValue = cruise.voyageEnd?.lubeOilROB || '\u2013';
 
   return (
-    <div className="glass-card rounded-2xl p-5 mb-6 overflow-hidden animate-fade-in">
+    <div className="mb-6 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{'\uD83D\uDCCA'}</span>
-          <h3 className="text-lg font-display font-bold text-navy-800 dark:text-white">
-            Cruise Summary: {cruise.name || 'Unnamed'}
-          </h3>
+      <div className="flex items-center justify-between mb-3">
+        <div className="sum-header">
+          {'\u25B8'} Cruise Summary {'\u2014'} {cruise.name || 'Unnamed'} &bull; {cruise.legs.length} Leg{cruise.legs.length !== 1 ? 's' : ''}
           {isCompleted && (
-            <span className="badge bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1">
+            <span className="ml-2 badge bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-0.5 text-[0.55rem]">
               {'\u2713'} Completed
             </span>
           )}
         </div>
         {isCompleted && (
-          <div className="text-sm text-navy-500 dark:text-navy-400">
-            <span className="font-medium">Engineer:</span> {cruise.voyageEnd.engineer || 'N/A'}
-            <span className="mx-2">{'\u2022'}</span>
+          <div className="text-[0.6rem] text-[var(--color-faint)]">
+            <span className="font-medium">{cruise.voyageEnd.engineer || 'N/A'}</span>
+            <span className="mx-1.5">{'\u2022'}</span>
             <span>{new Date(cruise.voyageEnd.timestamp).toLocaleDateString()}</span>
           </div>
         )}
       </div>
 
-      {/* Stats Grid */}
-      <div className="flex gap-3">
-        {/* Legs */}
-        <div className="w-20 shrink-0 bg-gradient-to-br from-ocean-500/10 to-ocean-600/10 dark:from-ocean-500/20 dark:to-ocean-600/20
-                       rounded-xl p-3 text-center border border-ocean-200/50 dark:border-ocean-700/30 flex flex-col items-center justify-center">
-          <div className="text-[10px] font-semibold text-ocean-700 dark:text-ocean-400 mb-1 uppercase tracking-wide">{'\uD83D\uDEA2'} Legs</div>
-          <div className="text-2xl font-display font-bold text-navy-800 dark:text-white">{cruise.legs.length}</div>
-        </div>
-
-        {/* Fuel Section */}
-        <div className="flex-[3] min-w-0 summary-band-fuel bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/20 dark:to-orange-500/20
-                       rounded-xl p-3 border border-amber-200/50 dark:border-amber-700/30">
-          <div className="text-[10px] font-semibold text-amber-700 dark:text-amber-400 mb-2 uppercase tracking-wide">{'\u26FD'} Fuel (MT)</div>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">HFO</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{totalHFO.toFixed(2)}</div>
-              <div className="text-[10px] text-navy-400 dark:text-navy-500">ROB: {lastFuelROB.hfo}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">MGO</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{totalMGO.toFixed(2)}</div>
-              <div className="text-[10px] text-navy-400 dark:text-navy-500">ROB: {lastFuelROB.mgo}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">LSFO</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{totalLSFO.toFixed(2)}</div>
-              <div className="text-[10px] text-navy-400 dark:text-navy-500">ROB: {lastFuelROB.lsfo}</div>
+      {/* Cards Grid */}
+      <div className="sum-grid">
+        {/* FUEL — full width */}
+        <div className="cat-card fuel span-full">
+          <div className="cat-label">{'\u26FD'} Fuel Consumption (MT)</div>
+          <div className="cat-body">
+            <div className="fuel-cols">
+              <div className="fuel-col hfo">
+                <div className="fc-type"><span className="fc-dot"></span>HFO</div>
+                <div className="fc-big mono">{totalHFO.toFixed(2)}</div>
+                <div className="fc-rob mono">ROB {lastFuelROB.hfo}</div>
+              </div>
+              <div className="fuel-col mgo">
+                <div className="fc-type"><span className="fc-dot"></span>MGO</div>
+                <div className="fc-big mono">{totalMGO.toFixed(2)}</div>
+                <div className="fc-rob mono">ROB {lastFuelROB.mgo}</div>
+              </div>
+              <div className="fuel-col lsfo">
+                <div className="fc-type"><span className="fc-dot"></span>LSFO</div>
+                <div className="fc-big mono">{totalLSFO.toFixed(2)}</div>
+                <div className="fc-rob mono">ROB {lastFuelROB.lsfo}</div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Fresh Water Section */}
-        <div className="flex-[2] min-w-0 summary-band-water bg-gradient-to-br from-blue-500/10 to-cyan-500/10 dark:from-blue-500/20 dark:to-cyan-500/20
-                       rounded-xl p-3 border border-blue-200/50 dark:border-blue-700/30">
-          <div className="text-[10px] font-semibold text-blue-700 dark:text-blue-400 mb-2 uppercase tracking-wide">{'\uD83D\uDCA7'} Fresh Water (MT)</div>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">Prod</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{Math.round(totalFWProd)}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">Cons</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{Math.round(totalFWCons)}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">ROB</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{lastFWROB === '\u2013' ? '\u2013' : Math.round(parseFloat(lastFWROB))}</div>
+        {/* WATER */}
+        <div className="cat-card water">
+          <div className="cat-label">{'\uD83D\uDCA7'} Potable Water (MT)</div>
+          <div className="cat-body">
+            <div className="water-rows">
+              <div className="water-row"><span className="wr-label">Production</span><span className="wr-val mono">{Math.round(totalFWProd)}</span></div>
+              <div className="water-row"><span className="wr-label">Consumption</span><span className="wr-val mono">{Math.round(totalFWCons)}</span></div>
+              <div className="water-row"><span className="wr-label">R.O.B.</span><span className="wr-val mono">{lastFWROB === '\u2013' ? '\u2013' : Math.round(parseFloat(lastFWROB))}</span></div>
             </div>
           </div>
         </div>
 
-        {/* NaOH Section */}
-        <div className="flex-[1.5] min-w-0 summary-band-chem bg-gradient-to-br from-purple-500/10 to-indigo-500/10 dark:from-purple-500/20 dark:to-indigo-500/20
-                       rounded-xl p-3 border border-purple-200/50 dark:border-purple-700/30">
-          <div className="text-[10px] font-semibold text-purple-700 dark:text-purple-400 mb-2 uppercase tracking-wide">{'\uD83E\uDDEA'} NaOH (L)</div>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">Cons</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{Math.round(totalNaOHCons)}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">ROB</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{lastNaOHROB === '\u2013' ? '\u2013' : Math.round(parseFloat(lastNaOHROB))}</div>
+        {/* CHEMICALS */}
+        <div className="cat-card chem">
+          <div className="cat-label"><span className="hazard-icon">{'\u26A0'}</span> NaOH / Alkali (L)</div>
+          <div className="cat-body">
+            <div className="chem-rows">
+              <div className="chem-row"><span className="cr-label">Consumption</span><span className="cr-val mono">{Math.round(totalNaOHCons)}</span></div>
+              <div className="chem-row"><span className="cr-label">R.O.B.</span><span className="cr-val mono">{lastNaOHROB === '\u2013' ? '\u2013' : Math.round(parseFloat(lastNaOHROB))}</span></div>
             </div>
           </div>
         </div>
 
-        {/* Engine Lub-Oil Section */}
-        <div className="flex-[1.5] min-w-0 summary-band-lube bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/20 dark:to-green-500/20
-                       rounded-xl p-3 border border-emerald-200/50 dark:border-emerald-700/30">
-          <div className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 mb-2 uppercase tracking-wide">{'\uD83D\uDEE2\uFE0F'} Lub-Oil (L)</div>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">Cons</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{lubeOil === '\u2013' ? '\u2013' : Math.round(parseFloat(lubeOil))}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs text-navy-500 dark:text-navy-400 mb-1">ROB</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white">{lubeOilROBValue === '\u2013' ? '\u2013' : Math.round(parseFloat(lubeOilROBValue))}</div>
+        {/* LUBE OIL */}
+        <div className="cat-card lube">
+          <div className="cat-label">{'\uD83D\uDEE2\uFE0F'} Engine Lub-Oil (L)</div>
+          <div className="cat-body">
+            <div className="lube-rows">
+              <div className="lube-row"><span className="lr-label">Consumption</span><span className="lr-val mono">{lubeOil === '\u2013' ? '\u2013' : Math.round(parseFloat(lubeOil))}</span></div>
+              <div className="lube-row"><span className="lr-label">R.O.B.</span><span className="lr-val mono">{lubeOilROBValue === '\u2013' ? '\u2013' : Math.round(parseFloat(lubeOilROBValue))}</span></div>
             </div>
           </div>
         </div>

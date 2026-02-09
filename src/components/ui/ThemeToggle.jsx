@@ -23,8 +23,8 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setDark(!dark)}
-      className="p-2 rounded-xl bg-white/50 dark:bg-navy-800/50 hover:bg-white dark:hover:bg-navy-700
-                 text-navy-600 dark:text-navy-200 transition-all duration-200 border border-navy-200/50 dark:border-navy-600/50"
+      className="p-2 rounded-lg bg-[var(--color-surface)] dark:bg-[rgba(30,41,59,0.6)] hover:bg-[var(--color-surface2)] dark:hover:bg-navy-700
+                 text-[var(--color-dim)] dark:text-navy-200 transition-all duration-200 border border-[var(--color-border-subtle)] dark:border-white/10"
       title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       {dark ? <Icons.Sun /> : <Icons.Moon />}

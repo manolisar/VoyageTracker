@@ -61,37 +61,33 @@ const LegSection = ({ leg, onChange, onDelete, legIndex, densities, externalColl
         danger={true}
       />
 
-      <div className="glass-card rounded-2xl overflow-hidden mb-5 animate-slide-up" style={{ animationDelay: `${legIndex * 0.1}s` }}>
+      <div className="glass-card rounded-xl overflow-hidden mb-5 animate-slide-up" style={{ animationDelay: `${legIndex * 0.1}s` }}>
         <div
-          className="px-5 py-4 cursor-pointer flex justify-between items-center bg-gradient-to-r from-navy-50 to-navy-100/50
-                     dark:from-navy-800/50 dark:to-navy-900/30 hover:from-navy-100 hover:to-navy-100
-                     dark:hover:from-navy-800 dark:hover:to-navy-800 transition-all"
+          className="leg-head px-5 py-3.5 cursor-pointer flex justify-between items-center hover:bg-[var(--color-surface2)] dark:hover:bg-navy-800/70 transition-all"
           onClick={handleToggleCollapse}
         >
-          <div className="flex items-center gap-4">
-            <span className={`text-navy-400 dark:text-navy-500 transition-transform duration-300 ${collapsed ? '' : 'rotate-90'}`}>
+          <div className="flex items-center gap-3">
+            <span className={`text-[var(--color-faint)] transition-transform duration-300 ${collapsed ? '' : 'rotate-90'}`}>
               <Icons.ChevronRight />
             </span>
             <div>
-              <h2 className="text-lg font-display font-bold text-navy-800 dark:text-white flex items-center gap-2">
-                <span className="text-ocean-500">Leg {legIndex + 1}</span>
-                <Icons.ArrowRight />
+              <h2 className="text-[0.88rem] font-bold text-[var(--color-text)] dark:text-white flex items-center gap-2">
+                <span className="text-[var(--color-ocean-500)]">Leg {legIndex + 1}</span>
+                <span className="text-[var(--color-faint)]">{'\u2192'}</span>
                 <span>{depPort} {'\u2192'} {arrPort}</span>
               </h2>
               {collapsed && (
-                <p className="text-sm text-navy-500 dark:text-navy-400">
+                <p className="text-[0.65rem] text-[var(--color-dim)] mt-0.5 font-mono">
                   HFO: {legTotalHFO.toFixed(2)} {'\u2022'} MGO: {legTotalMGO.toFixed(2)} {'\u2022'} LSFO: {legTotalLSFO.toFixed(2)}
                 </p>
               )}
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-4 py-2 rounded-xl font-display font-bold shadow-lg shadow-ocean-500/25">
-              {legTotal.toFixed(2)} MT
-            </div>
+          <div className="flex items-center gap-3">
+            <span className="total-pill mono">{legTotal.toFixed(2)} MT</span>
             <button
               onClick={(e) => { e.stopPropagation(); setShowDeleteConfirm(true); }}
-              className="p-2 text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+              className="p-1.5 text-[var(--color-faint)] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
               title="Delete Leg"
             >
               <Icons.Trash />

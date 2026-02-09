@@ -74,106 +74,102 @@ const ReportForm = ({ report, onChange, densities, legIndex, reportType, onPhase
 
   return (
     <>
-      <div className="glass-card rounded-2xl overflow-hidden mb-5 animate-slide-up">
+      <div className="glass-card rounded-xl overflow-hidden mb-5 animate-slide-up">
         <div
-          className={`px-5 py-4 cursor-pointer flex justify-between items-center transition-colors
-            ${isDeparture
-              ? 'bg-gradient-to-r from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20'
-              : 'bg-gradient-to-r from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/20 dark:to-teal-500/20'}`}
+          className="report-head px-5 py-3.5 cursor-pointer flex justify-between items-center hover:bg-[var(--color-surface2)] dark:hover:bg-navy-800/70 transition-all"
           onClick={() => setCollapsed(!collapsed)}
         >
           <div className="flex items-center gap-3">
-            <span className={`text-2xl ${isDeparture ? 'text-blue-500' : 'text-emerald-500'}`}>
-              {isDeparture ? '\uD83D\uDEA2' : '\u2693'}
+            <span className={`transition-transform duration-300 text-[var(--color-faint)] ${collapsed ? '' : 'rotate-90'}`}>
+              <Icons.ChevronRight />
             </span>
             <div>
-              <h3 className="text-lg font-display font-bold text-navy-800 dark:text-white">
-                {isDeparture ? 'Departure' : 'Arrival'} {'\u2013'} {report.port || 'No port'}
+              <h3 className="text-[0.88rem] font-bold text-[var(--color-text)] dark:text-white flex items-center gap-2">
+                <span className={isDeparture ? 'text-blue-500' : 'text-emerald-500'}>
+                  {isDeparture ? '\uD83D\uDEA2' : '\u2693'}
+                </span>
+                <span>{isDeparture ? 'Departure' : 'Arrival'}</span>
+                <span className="text-[var(--color-faint)]">{'\u2013'}</span>
+                <span>{report.port || 'No port'}</span>
               </h3>
-              <p className="text-sm text-navy-500 dark:text-navy-400">
-                {report.date || 'No date'} {'\u2022'} {report.phases.length} phases
-              </p>
+              {collapsed && (
+                <p className="text-[0.65rem] text-[var(--color-dim)] mt-0.5 font-mono">
+                  {report.date || 'No date'} {'\u2022'} {report.phases.length} phases
+                </p>
+              )}
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className={`px-4 py-2 rounded-xl font-display font-bold text-white
-              ${isDeparture
-                ? 'bg-gradient-to-r from-blue-500 to-indigo-600'
-                : 'bg-gradient-to-r from-emerald-500 to-teal-600'}`}>
-              {totalConsumption.toFixed(2)} MT
-            </div>
-            <span className={`text-navy-400 transition-transform duration-300 ${collapsed ? '' : 'rotate-180'}`}>
-              <Icons.ChevronDown />
-            </span>
+          <div className="flex items-center gap-3">
+            <span className="total-pill mono">{totalConsumption.toFixed(2)} MT</span>
           </div>
         </div>
 
         {!collapsed && (
-          <div className="p-5 dark:bg-navy-900/30">
+          <div className="p-5 dark:bg-navy-900/20">
             <div className="grid grid-cols-4 gap-4 mb-6">
               <div>
-                <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">Date</label>
+                <label className="form-label">Date</label>
                 <input type="date" value={report.date}
                   onClick={(e) => e.stopPropagation()}
                   onChange={(e) => onChange({ ...report, date: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl text-sm input-field" />
+                  className="form-input font-mono" />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">Port</label>
+                <label className="form-label">Port</label>
                 <input type="text" value={report.port}
                   onClick={(e) => e.stopPropagation()}
                   onChange={(e) => onChange({ ...report, port: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl text-sm input-field" placeholder="Singapore" />
+                  className="form-input" placeholder="Singapore" />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">Engineer</label>
+                <label className="form-label">Engineer</label>
                 <input type="text" value={report.engineer}
                   onClick={(e) => e.stopPropagation()}
                   onChange={(e) => onChange({ ...report, engineer: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl text-sm input-field" />
+                  className="form-input" />
               </div>
               {isDeparture ? (
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">SBE</label>
+                    <label className="form-label">SBE</label>
                     <input type="time" value={report.timeEvents.sbe} step="360"
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, sbe: e.target.value }})}
-                      className="w-full px-3 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl text-sm input-field font-mono" />
+                      className="form-input font-mono" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">FA</label>
+                    <label className="form-label">FA</label>
                     <input type="time" value={report.timeEvents.fa} step="360"
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, fa: e.target.value }})}
-                      className="w-full px-3 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl text-sm input-field font-mono" />
+                      className="form-input font-mono" />
                   </div>
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">SBE</label>
+                    <label className="form-label">SBE</label>
                     <input type="time" value={report.timeEvents.sbe} step="360"
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, sbe: e.target.value }})}
-                      className="w-full px-3 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl text-sm input-field font-mono" />
+                      className="form-input font-mono" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-navy-500 dark:text-navy-400 mb-1.5 uppercase tracking-wide">FWE</label>
+                    <label className="form-label">FWE</label>
                     <input type="time" value={report.timeEvents.fwe} step="360"
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => onChange({ ...report, timeEvents: { ...report.timeEvents, fwe: e.target.value }})}
-                      className="w-full px-3 py-2.5 bg-white dark:bg-navy-800 border border-navy-200 dark:border-navy-600 rounded-xl text-sm input-field font-mono" />
+                      className="form-input font-mono" />
                   </div>
                 </div>
               )}
             </div>
 
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-sm font-semibold text-navy-600 dark:text-navy-300">
-                {isDeparture ? '\uD83C\uDFED Port / Changeover Phases' : '\uD83C\uDF0A Sea / Changeover Phases'}
+              <span className="section-label">
+                {isDeparture ? '\u25B8 Port / Changeover Phases' : '\u25B8 Sea / Changeover Phases'}
               </span>
-              <div className="flex-1 border-t border-navy-200 dark:border-navy-700"></div>
+              <div className="flex-1 border-t border-[var(--color-border-subtle)] dark:border-white/10"></div>
             </div>
 
             {operationalPhases.map((phase, index) => {
@@ -198,16 +194,16 @@ const ReportForm = ({ report, onChange, densities, legIndex, reportType, onPhase
 
             <button
               onClick={handleAddPhase}
-              className="w-full py-3 border-2 border-dashed border-ocean-300 dark:border-ocean-700 hover:border-ocean-500 dark:hover:border-ocean-500
-                         hover:bg-ocean-50 dark:hover:bg-ocean-900/20 rounded-xl text-ocean-500 hover:text-ocean-600
-                         font-semibold text-sm mb-5 transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 border-2 border-dashed border-[var(--color-border-subtle)] hover:border-[var(--color-ocean-500)]
+                         hover:bg-[var(--color-surface2)] rounded-lg text-[var(--color-dim)] hover:text-[var(--color-ocean-500)]
+                         font-semibold text-[0.72rem] mb-5 transition-all flex items-center justify-center gap-2"
             >
               <Icons.Plus /> Add Fuel Changeover Phase
             </button>
 
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-sm font-semibold text-navy-600 dark:text-navy-300">{'\u2693'} Stand By (Maneuvering)</span>
-              <div className="flex-1 border-t border-navy-200 dark:border-navy-700"></div>
+              <span className="section-label">{'\u25B8'} Stand By (Maneuvering)</span>
+              <div className="flex-1 border-t border-[var(--color-border-subtle)] dark:border-white/10"></div>
             </div>
 
             {standbyPhase && (
@@ -224,50 +220,54 @@ const ReportForm = ({ report, onChange, densities, legIndex, reportType, onPhase
               />
             )}
 
-            <div className={`report-totals rounded-2xl p-5 text-white shadow-lg
-              ${isDeparture
-                ? 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-blue-500/25'
-                : 'bg-gradient-to-r from-emerald-500 to-teal-600 shadow-emerald-500/25'}`}>
-              <div className="text-xs font-semibold opacity-90 mb-3 uppercase tracking-wider">Report Totals</div>
-              <div className="grid grid-cols-4 gap-4 text-center">
-                {[
-                  { label: 'HFO', value: grandTotals.HFO },
-                  { label: 'MGO', value: grandTotals.MGO },
-                  { label: 'LSFO', value: grandTotals.LSFO },
-                  { label: 'Total', value: totalConsumption },
-                ].map(item => (
-                  <div key={item.label} className="bg-white/20 backdrop-blur-sm rounded-xl p-3 hover:bg-white/25 transition-colors">
-                    <div className="text-2xl font-display font-bold">{item.value.toFixed(2)}</div>
-                    <div className="text-xs opacity-90 font-medium">{item.label} (MT)</div>
+            <div className="cat-card fuel" style={{ gridColumn: 'unset' }}>
+              <div className="cat-label">{isDeparture ? '\uD83D\uDEA2' : '\u2693'} {isDeparture ? 'Departure' : 'Arrival'} Totals (MT)</div>
+              <div className="cat-body">
+                <div className="fuel-cols" style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr' }}>
+                  <div className="fuel-col hfo">
+                    <div className="fc-type"><span className="fc-dot"></span>HFO</div>
+                    <div className="fc-big mono">{grandTotals.HFO.toFixed(2)}</div>
                   </div>
-                ))}
+                  <div className="fuel-col mgo">
+                    <div className="fc-type"><span className="fc-dot"></span>MGO</div>
+                    <div className="fc-big mono">{grandTotals.MGO.toFixed(2)}</div>
+                  </div>
+                  <div className="fuel-col lsfo">
+                    <div className="fc-type"><span className="fc-dot"></span>LSFO</div>
+                    <div className="fc-big mono">{grandTotals.LSFO.toFixed(2)}</div>
+                  </div>
+                  <div className="fuel-col" style={{ textAlign: 'center' }}>
+                    <div className="fc-type" style={{ color: 'var(--color-text)' }}>{'\u03A3'} Total</div>
+                    <div className="fc-big mono" style={{ color: 'var(--color-text)' }}>{totalConsumption.toFixed(2)}</div>
+                  </div>
+                </div>
               </div>
             </div>
 
             {isDeparture && (
-              <div className="grid grid-cols-2 gap-5 mt-5 max-w-xl">
-                <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
-                  <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">Fuel R.O.B. (MT)</h4>
-                  <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-4 mt-5 max-w-xl">
+                <div className="cat-card fuel" style={{ gridColumn: 'unset' }}>
+                  <div className="cat-label">Fuel R.O.B. (MT)</div>
+                  <div className="cat-body space-y-2">
                     {['hfo', 'mgo', 'lsfo'].map(fuel => (
                       <div key={fuel} className="flex items-center gap-3">
-                        <label className="w-10 text-xs text-navy-500 dark:text-navy-400 uppercase font-semibold flex-shrink-0">{fuel}</label>
+                        <label className="w-10 form-label mb-0 flex-shrink-0">{fuel}</label>
                         <input type="number" step="0.01" value={report.rob[fuel]}
                           onChange={(e) => onChange({ ...report, rob: { ...report.rob, [fuel]: e.target.value }})}
-                          className="flex-1 min-w-0 px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-lg text-sm font-mono input-field" />
+                          className="flex-1 min-w-0 form-input font-mono text-[0.78rem]" />
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
-                  <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">Fuel Bunkered (MT)</h4>
-                  <div className="space-y-2">
+                <div className="cat-card fuel" style={{ gridColumn: 'unset' }}>
+                  <div className="cat-label">Fuel Bunkered (MT)</div>
+                  <div className="cat-body space-y-2">
                     {['hfo', 'mgo', 'lsfo'].map(fuel => (
                       <div key={fuel} className="flex items-center gap-3">
-                        <label className="w-10 text-xs text-navy-500 dark:text-navy-400 uppercase font-semibold flex-shrink-0">{fuel}</label>
+                        <label className="w-10 form-label mb-0 flex-shrink-0">{fuel}</label>
                         <input type="number" step="0.01" value={report.bunkered[fuel]}
                           onChange={(e) => onChange({ ...report, bunkered: { ...report.bunkered, [fuel]: e.target.value }})}
-                          className="flex-1 min-w-0 px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-lg text-sm font-mono input-field" />
+                          className="flex-1 min-w-0 form-input font-mono text-[0.78rem]" />
                       </div>
                     ))}
                   </div>
@@ -277,59 +277,59 @@ const ReportForm = ({ report, onChange, densities, legIndex, reportType, onPhase
 
             {!isDeparture && (
               <div className="grid grid-cols-3 gap-4 mt-5">
-                <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
-                  <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">R.O.B. (MT)</h4>
-                  <div className="space-y-2">
+                <div className="cat-card fuel" style={{ gridColumn: 'unset' }}>
+                  <div className="cat-label">R.O.B. (MT)</div>
+                  <div className="cat-body space-y-2">
                     {['hfo', 'mgo', 'lsfo'].map(fuel => (
                       <div key={fuel} className="flex items-center gap-3">
-                        <label className="w-10 text-xs text-navy-500 dark:text-navy-400 uppercase font-semibold flex-shrink-0">{fuel}</label>
+                        <label className="w-10 form-label mb-0 flex-shrink-0">{fuel}</label>
                         <input type="number" step="0.01" value={report.rob[fuel]}
                           onChange={(e) => onChange({ ...report, rob: { ...report.rob, [fuel]: e.target.value }})}
-                          className="flex-1 min-w-0 px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-lg text-sm font-mono input-field" />
+                          className="flex-1 min-w-0 form-input font-mono text-[0.78rem]" />
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
-                  <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">Fresh Water (MT)</h4>
-                  <div className="space-y-2">
+                <div className="cat-card water">
+                  <div className="cat-label">Fresh Water (MT)</div>
+                  <div className="cat-body space-y-2">
                     {[['rob', 'R.O.B.'], ['bunkered', 'Bunk.'], ['production', 'Prod.'], ['consumption', 'Cons.']].map(([key, label]) => (
                       <div key={key} className="flex items-center gap-3">
-                        <label className="w-10 text-xs text-navy-500 dark:text-navy-400 font-semibold flex-shrink-0">{label}</label>
+                        <label className="w-10 form-label mb-0 flex-shrink-0">{label}</label>
                         <input type="number" step="0.1" value={report.freshWater[key]}
                           onChange={(e) => onChange({ ...report, freshWater: { ...report.freshWater, [key]: e.target.value }})}
-                          className="flex-1 min-w-0 px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-lg text-sm font-mono input-field" />
+                          className="flex-1 min-w-0 form-input font-mono text-[0.78rem]" />
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="bg-white dark:bg-navy-800 rounded-xl p-4 border border-navy-100 dark:border-navy-700">
-                  <h4 className="font-semibold text-navy-700 dark:text-navy-200 mb-3 text-sm">AEP / Alkali</h4>
-                  <div className="space-y-2">
+                <div className="cat-card chem">
+                  <div className="cat-label">AEP / Alkali</div>
+                  <div className="cat-body space-y-2">
                     <div>
-                      <label className="block text-xs text-navy-400 dark:text-navy-500 mb-1">Open Loop (hh:mm)</label>
+                      <label className="form-label">Open Loop (hh:mm)</label>
                       <input type="text" value={report.aep.openLoopHrs} placeholder="00:00"
                         onChange={(e) => onChange({ ...report, aep: { ...report.aep, openLoopHrs: e.target.value }})}
-                        className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-lg text-xs font-mono input-field" />
+                        className="form-input font-mono text-[0.72rem]" />
                     </div>
                     <div>
-                      <label className="block text-xs text-navy-400 dark:text-navy-500 mb-1">Closed Loop (hh:mm)</label>
+                      <label className="form-label">Closed Loop (hh:mm)</label>
                       <input type="text" value={report.aep.closedLoopHrs} placeholder="00:00"
                         onChange={(e) => onChange({ ...report, aep: { ...report.aep, closedLoopHrs: e.target.value }})}
-                        className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-lg text-xs font-mono input-field" />
+                        className="form-input font-mono text-[0.72rem]" />
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="block text-xs text-navy-400 dark:text-navy-500 mb-1">NaOH Cons (L)</label>
+                        <label className="form-label">NaOH Cons (L)</label>
                         <input type="number" step="0.1" value={report.aep.alkaliCons}
                           onChange={(e) => onChange({ ...report, aep: { ...report.aep, alkaliCons: e.target.value }})}
-                          className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-lg text-xs font-mono input-field" />
+                          className="form-input font-mono text-[0.72rem]" />
                       </div>
                       <div>
-                        <label className="block text-xs text-navy-400 dark:text-navy-500 mb-1">NaOH ROB (L)</label>
+                        <label className="form-label">NaOH ROB (L)</label>
                         <input type="number" step="0.1" value={report.aep.alkaliRob}
                           onChange={(e) => onChange({ ...report, aep: { ...report.aep, alkaliRob: e.target.value }})}
-                          className="w-full px-3 py-2 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-lg text-xs font-mono input-field" />
+                          className="form-input font-mono text-[0.72rem]" />
                       </div>
                     </div>
                   </div>

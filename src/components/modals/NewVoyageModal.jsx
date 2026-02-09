@@ -39,43 +39,41 @@ const NewVoyageModal = ({ isOpen, onClose, onCreate }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content w-full max-w-md animate-scale-in" onClick={e => e.stopPropagation()}>
-        <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-6 py-5 rounded-t-2xl">
-          <div className="flex items-center gap-3">
-            <Icons.Ship />
-            <div>
-              <h2 className="text-xl font-display font-bold">New Voyage</h2>
-              <p className="text-sm text-white/80">Enter voyage details</p>
-            </div>
+        <div className="modal-head flex items-center gap-3">
+          <Icons.Ship />
+          <div>
+            <h2>New Voyage</h2>
+            <p>Enter voyage details</p>
           </div>
         </div>
 
         <div className="p-6 space-y-5 dark:bg-navy-800" onKeyDown={handleKeyDown}>
           <div>
-            <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">Start Date</label>
+            <label className="form-label">Start Date</label>
             <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-4 py-3 bg-white dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-xl text-lg input-field" autoFocus />
+              className="form-input font-mono" autoFocus />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">From</label>
+              <label className="form-label">From</label>
               <input type="text" value={fromPort} onChange={(e) => setFromPort(e.target.value)} placeholder="Singapore"
-                className="w-full px-4 py-3 bg-white dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-xl input-field" />
+                className="form-input" />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">To</label>
+              <label className="form-label">To</label>
               <input type="text" value={toPort} onChange={(e) => setToPort(e.target.value)} placeholder="Hong Kong"
-                className="w-full px-4 py-3 bg-white dark:bg-navy-900 border border-navy-200 dark:border-navy-600 rounded-xl input-field" />
+                className="form-input" />
             </div>
           </div>
 
           {voyageName && (
-            <div className="bg-ocean-50 dark:bg-ocean-900/20 border border-ocean-200 dark:border-ocean-800/50 rounded-xl p-4">
-              <div className="text-xs text-ocean-600 dark:text-ocean-400 font-semibold uppercase tracking-wide mb-1">Voyage Name</div>
-              <div className="text-lg font-display font-bold text-navy-800 dark:text-white flex items-center gap-2">
+            <div className="bg-[var(--color-surface2)] dark:bg-[rgba(30,41,59,0.5)] border border-[var(--color-border-subtle)] dark:border-white/10 rounded-lg p-4">
+              <div className="form-label mb-1">Voyage Name</div>
+              <div className="text-[0.95rem] font-bold text-[var(--color-text)] dark:text-white flex items-center gap-2">
                 {fromPort} <Icons.ArrowRight /> {toPort}
               </div>
-              <div className="text-xs text-navy-500 dark:text-navy-400 mt-1 font-mono">
+              <div className="text-[0.6rem] text-[var(--color-faint)] mt-1 font-mono">
                 {'\uD83D\uDCC2'} {startDate}_{fromPort.replace(/[^a-z0-9]/gi, '_')}_to_{toPort.replace(/[^a-z0-9]/gi, '_')}.json
               </div>
             </div>
@@ -83,12 +81,12 @@ const NewVoyageModal = ({ isOpen, onClose, onCreate }) => {
 
           <div className="flex gap-3 pt-2">
             <button onClick={onClose}
-              className="flex-1 px-4 py-3 rounded-xl bg-navy-100 dark:bg-navy-700 text-navy-700 dark:text-navy-200 font-semibold hover:bg-navy-200 dark:hover:bg-navy-600 transition-colors">
+              className="flex-1 px-4 py-2.5 rounded-lg btn-flat font-semibold text-[0.78rem]">
               Cancel
             </button>
             <button onClick={handleCreate} disabled={!canCreate}
-              className={`flex-1 px-4 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2
-                ${canCreate ? 'btn-primary text-white' : 'bg-navy-200 dark:bg-navy-700 text-navy-400 dark:text-navy-500 cursor-not-allowed'}`}>
+              className={`flex-1 px-4 py-2.5 rounded-lg font-semibold text-[0.78rem] transition-all flex items-center justify-center gap-2
+                ${canCreate ? 'btn-primary text-white' : 'bg-[var(--color-surface2)] dark:bg-navy-700 text-[var(--color-faint)] dark:text-navy-500 cursor-not-allowed'}`}>
               <Icons.Plus /> Create Voyage
             </button>
           </div>

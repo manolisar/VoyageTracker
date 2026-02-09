@@ -27,24 +27,22 @@ const SettingsModal = ({ isOpen, onClose, densities, onSave }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content w-full max-w-lg animate-scale-in" onClick={e => e.stopPropagation()}>
-        <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 text-white px-6 py-5 rounded-t-2xl">
-          <div className="flex items-center gap-3">
-            <Icons.Settings />
-            <div>
-              <h2 className="text-xl font-display font-bold">Density Settings</h2>
-              <p className="text-sm text-white/80">Fuel densities @ 30{'\u00B0'}C</p>
-            </div>
+        <div className="modal-head flex items-center gap-3">
+          <Icons.Settings />
+          <div>
+            <h2>Density Settings</h2>
+            <p>Fuel densities @ 30{'\u00B0'}C</p>
           </div>
         </div>
 
-        <div className="p-6 space-y-5">
-          <div className="bg-gold-50 dark:bg-gold-900/20 border border-gold-200 dark:border-gold-800/50 rounded-xl p-4 text-sm text-gold-800 dark:text-gold-200">
+        <div className="p-6 space-y-5 dark:bg-navy-800">
+          <div className="bg-[var(--color-hfo-light)] dark:bg-[rgba(217,119,6,0.08)] border border-[var(--color-hfo-border)] dark:border-[rgba(217,119,6,0.2)] rounded-lg p-4 text-[0.78rem] text-[var(--color-hfo)] dark:text-[var(--color-hfo-band)]">
             <strong>Note:</strong> These densities apply to ALL legs in this cruise. Counter readings are in m{'\u00B3'}, calculations convert to MT.
           </div>
 
           {Object.keys(localDensities).map(fuel => (
             <div key={fuel}>
-              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-200 mb-2">
+              <label className="form-label">
                 {fuel} Density (t/m{'\u00B3'})
               </label>
               <input
@@ -52,8 +50,7 @@ const SettingsModal = ({ isOpen, onClose, densities, onSave }) => {
                 step="0.001"
                 value={localDensities[fuel]}
                 onChange={(e) => setLocalDensities({ ...localDensities, [fuel]: parseFloat(e.target.value) || 0 })}
-                className="w-full px-4 py-3 bg-navy-50 dark:bg-navy-800 border border-navy-200 dark:border-navy-600
-                           rounded-xl font-mono text-lg input-field"
+                className="form-input font-mono text-[1rem]"
               />
             </div>
           ))}
@@ -61,14 +58,13 @@ const SettingsModal = ({ isOpen, onClose, densities, onSave }) => {
           <div className="flex gap-3 pt-2">
             <button
               onClick={handleSave}
-              className="flex-1 px-6 py-3 btn-primary text-white rounded-xl font-semibold flex items-center justify-center gap-2"
+              className="flex-1 px-6 py-2.5 btn-primary text-white rounded-lg font-semibold text-[0.78rem] flex items-center justify-center gap-2"
             >
               <Icons.Check /> Save Settings
             </button>
             <button
               onClick={handleReset}
-              className="px-6 py-3 bg-navy-100 dark:bg-navy-700 hover:bg-navy-200 dark:hover:bg-navy-600
-                         text-navy-700 dark:text-navy-200 rounded-xl font-semibold transition-colors"
+              className="px-6 py-2.5 btn-flat rounded-lg font-semibold text-[0.78rem]"
             >
               Reset
             </button>
