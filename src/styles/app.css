@@ -717,6 +717,68 @@ tr.fuel-row-lsfo .eq-mt:not(.zero) { color: var(--color-lsfo); }
 .dark .lube-row .lr-label { color: #94a3b8; }
 .dark .lube-row .lr-val { color: var(--color-lube-band); }
 
+/* Navigation/Voyage Report card */
+.cat-card.nav { background: var(--color-water-light); border: 1px solid var(--color-water-border); }
+.cat-card.nav::before { background: var(--color-ocean-500); }
+.cat-card.nav .cat-label { color: var(--color-water); }
+.dark .cat-card.nav { background: rgba(2, 132, 199, 0.08); border-color: rgba(2, 132, 199, 0.2); }
+.dark .cat-card.nav .cat-label { color: var(--color-water-band); }
+
+/* Voyage report section — 3-column grid for dep/sea/arr */
+.vr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+}
+.vr-col {
+  padding: 0.75rem 1rem;
+  border-right: 1px solid var(--color-border-subtle);
+}
+.vr-col:last-child { border-right: none; }
+.dark .vr-col { border-right-color: rgba(255, 255, 255, 0.08); }
+.vr-col-head {
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-water);
+  margin-bottom: 0.6rem;
+}
+.dark .vr-col-head { color: var(--color-water-band); }
+.vr-sub-head {
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  margin-top: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+.dark .vr-sub-head { color: rgba(148, 163, 184, 0.5); }
+.vr-field {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  align-items: end;
+  margin-bottom: 0.4rem;
+}
+.vr-field-full {
+  margin-bottom: 0.4rem;
+}
+.vr-calc {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-water);
+  padding: 0.4rem 0.6rem;
+  background: rgba(2, 132, 199, 0.06);
+  border-radius: 6px;
+  text-align: center;
+}
+.dark .vr-calc {
+  color: var(--color-water-band);
+  background: rgba(2, 132, 199, 0.1);
+}
+
 /* Legs card in summary */
 .cat-card.legs { background: var(--color-surface); border: 1px solid var(--color-border-subtle); }
 .cat-card.legs::before { background: var(--color-ocean-500); }

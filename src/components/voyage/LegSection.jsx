@@ -3,8 +3,10 @@ import { Icons } from '../Icons';
 import { useToast } from '../../hooks/useToast';
 import { calcConsumption } from '../../utils/calculations';
 import { PHASE_TYPES } from '../../utils/constants';
+import { defaultVoyageReport } from '../../utils/factories';
 import ConfirmModal from '../modals/ConfirmModal';
 import ReportForm from './ReportForm';
+import VoyageReportSection from './VoyageReportSection';
 
 const LegSection = ({ leg, onChange, onDelete, legIndex, densities, externalCollapsed, onPhaseEnd }) => {
   const [localOverride, setLocalOverride] = useState(null);
@@ -97,6 +99,26 @@ const LegSection = ({ leg, onChange, onDelete, legIndex, densities, externalColl
 
         {!collapsed && (
           <div className="p-5 dark:bg-navy-900/20">
+            {leg.voyageReport ? (
+              <VoyageReportSection
+                voyageReport={leg.voyageReport}
+                onChange={(vr) => onChange({ ...leg, voyageReport: vr })}
+                onDelete={() => onChange({ ...leg, voyageReport: null })}
+                depPort={leg.departure?.port || ''}
+                arrPort={leg.arrival?.port || ''}
+                depDate={leg.departure?.date || ''}
+                arrDate={leg.arrival?.date || ''}
+              />
+            ) : (
+              <button
+                onClick={() => onChange({ ...leg, voyageReport: defaultVoyageReport() })}
+                className="w-full py-2.5 border-2 border-dashed border-[var(--color-water-border)] hover:border-[var(--color-ocean-500)]
+                           hover:bg-[var(--color-water-light)] dark:hover:bg-[rgba(2,132,199,0.08)] rounded-lg text-[var(--color-dim)] hover:text-[var(--color-ocean-500)]
+                           font-semibold text-[0.72rem] mb-4 transition-all flex items-center justify-center gap-2"
+              >
+                <Icons.Compass /> Add Voyage Report
+              </button>
+            )}
             <ReportForm
               report={leg.departure}
               onChange={handleDepartureChange}

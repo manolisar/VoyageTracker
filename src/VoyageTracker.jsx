@@ -172,6 +172,7 @@ export default function VoyageTracker() {
         id: Date.now(),
         departure: defaultReport('departure'),
         arrival: defaultReport('arrival'),
+        voyageReport: null,
       };
 
       if (newLeg.departure.phases.length > 0) {
@@ -248,7 +249,7 @@ export default function VoyageTracker() {
 
   const addLeg = () => {
     if (!activeCruise) return;
-    const newLeg = { id: Date.now(), departure: defaultReport('departure'), arrival: defaultReport('arrival') };
+    const newLeg = { id: Date.now(), departure: defaultReport('departure'), arrival: defaultReport('arrival'), voyageReport: null };
 
     const lastLeg = activeCruise.legs[activeCruise.legs.length - 1];
     if (lastLeg?.arrival?.phases) {

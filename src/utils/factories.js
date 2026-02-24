@@ -41,6 +41,24 @@ export const defaultReport = (type) => ({
   engineer: '',
 });
 
+export const defaultVoyageReport = () => ({
+  departure: {
+    sbe: '',
+    fa: '',
+    pierToFA: { distance: '', time: '', avgSpeed: '' },
+  },
+  voyage: {
+    totalMiles: '',
+    steamingTime: '',
+    averageSpeed: '',
+  },
+  arrival: {
+    sbe: '',
+    fwe: '',
+    sbeToBerth: { distance: '', time: '', avgSpeed: '' },
+  },
+});
+
 export const defaultCruise = () => {
   const id = Date.now();
   const date = new Date().toISOString().split('T')[0];

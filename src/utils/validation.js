@@ -26,7 +26,10 @@ export const validateCruiseData = (data) => {
     vessel: data.vessel || 'Celebrity Solstice',
     startDate: data.startDate || '',
     endDate: data.endDate || '',
-    legs: Array.isArray(data.legs) ? data.legs : [],
+    legs: Array.isArray(data.legs) ? data.legs.map(leg => ({
+      ...leg,
+      voyageReport: leg.voyageReport || null,
+    })) : [],
     densities: { ...DEFAULT_DENSITIES, ...(data.densities || {}) },
     voyageEnd: data.voyageEnd || null,
     lastModified: data.lastModified || new Date().toISOString(),
