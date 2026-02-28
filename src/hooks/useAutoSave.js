@@ -3,6 +3,13 @@ import { AUTO_SAVE_DELAY, APP_VERSION } from '../utils/constants';
 import { generateFilename } from '../utils/calculations';
 import { saveToBackup } from '../utils/indexeddb';
 
+const verifyPermission = async (handle) => {
+  const opts = { mode: 'readwrite' };
+  if ((await handle.queryPermission(opts)) === 'granted') return true;
+  if ((await handle.requestPermission(opts)) === 'granted') return true;
+  return false;
+};
+
 export const useAutoSave = (activeCruise, view, directoryHandle, activeFilename, setSaveStatus, addToast) => {
   const saveTimeoutRef = useRef(null);
 
@@ -12,6 +19,14 @@ export const useAutoSave = (activeCruise, view, directoryHandle, activeFilename,
     setSaveStatus('saving');
 
     try {
+      const hasPermission = await verifyPermission(directoryHandle);
+      if (!hasPermission) {
+        setSaveStatus('error');
+        addToast('Folder permission denied — please re-select the folder', 'error');
+        setTimeout(() => setSaveStatus('idle'), 3000);
+        return;
+      }
+
       const filename = activeFilename || generateFilename(cruise);
       const dataWithMeta = {
         ...cruise,

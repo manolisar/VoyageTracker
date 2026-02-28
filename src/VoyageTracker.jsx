@@ -68,7 +68,12 @@ export default function VoyageTracker() {
 
   const loadVoyagesFromDirectory = async () => {
     try {
-      const handle = await window.showDirectoryPicker();
+      const handle = await window.showDirectoryPicker({ mode: 'readwrite' });
+      const permission = await handle.requestPermission({ mode: 'readwrite' });
+      if (permission !== 'granted') {
+        toast.addToast('Write permission denied — cannot save to this folder', 'error');
+        return;
+      }
       setDirectoryHandle(handle);
 
       const loadedVoyages = [];
@@ -117,7 +122,12 @@ export default function VoyageTracker() {
   const createNewCruise = async () => {
     try {
       if (!directoryHandle) {
-        const handle = await window.showDirectoryPicker();
+        const handle = await window.showDirectoryPicker({ mode: 'readwrite' });
+        const permission = await handle.requestPermission({ mode: 'readwrite' });
+        if (permission !== 'granted') {
+          toast.addToast('Write permission denied — cannot save to this folder', 'error');
+          return;
+        }
         setDirectoryHandle(handle);
       }
       setShowNewVoyageModal(true);
