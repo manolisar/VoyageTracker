@@ -21,7 +21,14 @@ const Header = ({ saveStatus, directoryHandle, view, activeCruise, onSave, onSho
       <div className="max-w-6xl mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3.5">
-            <img src={`${import.meta.env.BASE_URL}celebrity-x.svg`} alt="Celebrity Cruises" className="w-10 h-10" />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#1a1f2e]">
+              <svg className="w-5 h-5" fill="none" stroke="#11878f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                <circle cx="12" cy="5" r="2" />
+                <line x1="12" y1="7" x2="12" y2="21" />
+                <path d="M8 11H5a7 7 0 0 0 14 0h-3" />
+                <line x1="8" y1="8" x2="16" y2="8" />
+              </svg>
+            </div>
             <div>
               <h1 className="text-[1.4rem] font-display font-extrabold tracking-tight text-[var(--color-text)] dark:text-white">Voyage Tracker</h1>
               <p className="text-[0.6rem] uppercase tracking-[1.5px] font-mono text-[var(--color-dim)] dark:text-navy-400">Engine Department &bull; v{APP_VERSION}</p>
