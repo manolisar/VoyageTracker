@@ -22,11 +22,11 @@ const Header = ({ saveStatus, directoryHandle, view, activeCruise, onSave, onSho
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3.5">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#1a1f2e]">
-              <svg className="w-5 h-5" fill="none" stroke="#11878f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                <circle cx="12" cy="5" r="2" />
-                <line x1="12" y1="7" x2="12" y2="21" />
-                <path d="M8 11H5a7 7 0 0 0 14 0h-3" />
-                <line x1="8" y1="8" x2="16" y2="8" />
+              <svg className="w-5 h-5" fill="none" stroke="#11878f" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 64 64">
+                <circle cx="32" cy="14" r="4" />
+                <line x1="32" y1="18" x2="32" y2="52" />
+                <path d="M18 30h-4a18 18 0 0 0 36 0h-4" />
+                <line x1="22" y1="22" x2="42" y2="22" />
               </svg>
             </div>
             <div>
