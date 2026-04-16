@@ -4,7 +4,7 @@ const ManualCarryOverModal = ({ isOpen, onClose, onConfirm, sourceInfo, targetIn
   const [selected, setSelected] = useState({ dg12: true, dg4: true, dg3: true, boiler1: true, boiler2: true });
 
   useEffect(() => {
-    if (isOpen) setSelected({ dg12: true, dg4: true, dg3: true, boiler1: true, boiler2: true });
+    if (isOpen) setSelected({ dg12: true, dg4: true, dg3: true, boiler1: true, boiler2: true }); // eslint-disable-line react-hooks/set-state-in-effect -- reset on open
   }, [isOpen]);
 
   if (!isOpen || !sourceInfo || !targetInfo) return null;
@@ -17,12 +17,12 @@ const ManualCarryOverModal = ({ isOpen, onClose, onConfirm, sourceInfo, targetIn
   const handleConfirm = () => {
     const result = {};
     Object.entries(selected).forEach(([key, isSelected]) => {
-      if (isSelected && sourceInfo.equipment[key]) result[key] = sourceInfo.equipment[key];
+      if (isSelected && sourceInfo.equipment[key] !== '' && sourceInfo.equipment[key] != null) result[key] = sourceInfo.equipment[key];
     });
     onConfirm(result);
   };
 
-  const hasValidSelection = Object.entries(sourceInfo.equipment).some(([k, v]) => v && v !== '' && selected[k]);
+  const hasValidSelection = Object.entries(sourceInfo.equipment).some(([k, v]) => v !== '' && v != null && selected[k]);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -45,7 +45,7 @@ const ManualCarryOverModal = ({ isOpen, onClose, onConfirm, sourceInfo, targetIn
           <div className="space-y-2 mb-4">
             {equipmentList.map(({ key, label }) => {
               const val = sourceInfo.equipment[key];
-              const hasVal = val && val !== '';
+              const hasVal = val !== '' && val != null;
               return (
                 <div key={key} onClick={() => hasVal && setSelected(p => ({...p, [key]: !p[key]}))}
                   className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all cursor-pointer

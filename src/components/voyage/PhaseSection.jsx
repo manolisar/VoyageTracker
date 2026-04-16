@@ -111,7 +111,7 @@ const PhaseSection = ({ phase, onChange, onDelete, canDelete, densities, collaps
             <button
               onClick={onDelete}
               className="text-[var(--color-faint)] hover:text-[var(--color-text)] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 p-1.5 rounded-lg transition-colors"
-              title="Delete this phase"
+              aria-label="Delete this phase"
             >
               <Icons.X />
             </button>
@@ -182,7 +182,7 @@ const PhaseSection = ({ phase, onChange, onDelete, canDelete, densities, collaps
                     onChange={handleRemarksChange}
                     placeholder="Enter remarks..."
                     rows="2"
-                    className="w-full bg-transparent border-none resize-none text-sm focus:outline-none placeholder:text-[var(--color-faint)]"
+                    className="w-full bg-transparent border-none resize-none text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ocean-500)] rounded placeholder:text-[var(--color-faint)]"
                     style={{ fontStyle: 'italic' }}
                   />
                 </div>

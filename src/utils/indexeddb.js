@@ -30,8 +30,11 @@ export const saveToBackup = async (cruise) => {
     };
 
     store.put(backupData);
-    await tx.complete;
-    db.close();
+    await new Promise((resolve, reject) => {
+      tx.oncomplete = () => { db.close(); resolve(); };
+      tx.onerror = () => { db.close(); reject(tx.error); };
+      tx.onabort = () => { db.close(); reject(tx.error); };
+    });
     return true;
   } catch (err) {
     console.error('Backup failed:', err);
@@ -91,8 +94,11 @@ export const deleteBackup = async (id) => {
     const tx = db.transaction(BACKUP_STORE_NAME, 'readwrite');
     const store = tx.objectStore(BACKUP_STORE_NAME);
     store.delete(id);
-    await tx.complete;
-    db.close();
+    await new Promise((resolve, reject) => {
+      tx.oncomplete = () => { db.close(); resolve(); };
+      tx.onerror = () => { db.close(); reject(tx.error); };
+      tx.onabort = () => { db.close(); reject(tx.error); };
+    });
     return true;
   } catch (err) {
     console.error('Delete backup failed:', err);

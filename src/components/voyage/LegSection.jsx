@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Icons } from '../Icons';
-import { useToast } from '../../hooks/useToast';
 import { calcConsumption } from '../../utils/calculations';
 import { PHASE_TYPES } from '../../utils/constants';
 import { defaultVoyageReport } from '../../utils/factories';
@@ -11,7 +10,6 @@ import VoyageReportSection from './VoyageReportSection';
 const LegSection = ({ leg, onChange, onDelete, legIndex, densities, externalCollapsed, onPhaseEnd }) => {
   const [localOverride, setLocalOverride] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const toast = useToast();
 
   const depPort = leg.departure?.port || '?';
   const arrPort = leg.arrival?.port || '?';
@@ -46,9 +44,7 @@ const LegSection = ({ leg, onChange, onDelete, legIndex, densities, externalColl
   };
 
   useEffect(() => {
-    if (externalCollapsed === undefined) {
-      setLocalOverride(null);
-    }
+    setLocalOverride(null); // eslint-disable-line react-hooks/set-state-in-effect -- sync with parent
   }, [externalCollapsed]);
 
   return (

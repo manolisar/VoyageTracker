@@ -61,7 +61,6 @@ export const defaultVoyageReport = () => ({
 
 export const defaultCruise = () => {
   const id = Date.now();
-  const date = new Date().toISOString().split('T')[0];
   return {
     id,
     name: '',

@@ -13,7 +13,7 @@ const FUEL_CLASS_LOWER = {
   LSFO: 'lsfo',
 };
 
-const EquipmentRow = ({ label, equipmentKey, data, onChange, disabled = false, allowedFuels = null, densities }) => {
+const EquipmentRow = ({ label, data, onChange, disabled = false, allowedFuels = null, densities }) => {
   const consumption = calcConsumption(data.start, data.end, data.fuel, densities);
   const diff = (data.start && data.end) ? (parseFloat(data.end) - parseFloat(data.start)).toFixed(1) : '\u2013';
 

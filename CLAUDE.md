@@ -8,6 +8,8 @@
 - **Current Version:** 6.0.0
 - **Architecture:** Vite + React 19 SPA (Single Page Application)
 - **Design System:** Signal Flag Bands (color-coded category cards)
+- **Google Analytics:** Measurement ID `G-LNJ4M7YBKJ`
+- **Hosting:** GitHub Pages — https://manolisar.github.io/VoyageTracker/
 
 ---
 

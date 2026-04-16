@@ -46,10 +46,11 @@ const VoyageList = ({ voyages, directoryHandle, onLoadDirectory, onCreateNew, on
       ) : (
         <div className="space-y-3">
           {voyages.map((voyage, index) => (
-            <div
+            <button
               key={voyage.id}
-              className="voyage-card glass-card rounded-xl p-4 flex justify-between items-center
-                         transition-all cursor-pointer group animate-slide-up"
+              className="voyage-card glass-card rounded-xl p-4 flex justify-between items-center w-full text-left
+                         transition-all cursor-pointer group animate-slide-up
+                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-ocean-500)]"
               style={{ animationDelay: `${index * 0.05}s` }}
               onClick={() => onOpenVoyage(voyage)}
             >
@@ -75,7 +76,7 @@ const VoyageList = ({ voyages, directoryHandle, onLoadDirectory, onCreateNew, on
               <div className="text-[var(--color-faint)] group-hover:text-[var(--color-ocean-500)] group-hover:translate-x-1 transition-all">
                 <Icons.ArrowRight />
               </div>
-            </div>
+            </button>
           ))}
         </div>
       )}

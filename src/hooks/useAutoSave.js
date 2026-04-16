@@ -69,7 +69,7 @@ export const useAutoSave = (activeCruise, view, directoryHandle, activeFilename,
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [activeCruise, view]);
+  }, [activeCruise, view]); // eslint-disable-line react-hooks/exhaustive-deps -- autoSave is stable
 
   return autoSave;
 };

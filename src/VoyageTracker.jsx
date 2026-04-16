@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from './hooks/useToast';
 import { useAutoSave } from './hooks/useAutoSave';
 import { useBackupInterval } from './hooks/useBackupInterval';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { DEFAULT_DENSITIES, PHASE_TYPES, APP_VERSION } from './utils/constants';
 import { defaultCruise, defaultReport } from './utils/factories';
-import { calcConsumption, generateFilename } from './utils/calculations';
+import { generateFilename } from './utils/calculations';
 import { validateCruiseData } from './utils/validation';
-import { getAllBackups, deleteBackup, saveToBackup } from './utils/indexeddb';
+import { getAllBackups, deleteBackup } from './utils/indexeddb';
 import { Icons } from './components/Icons';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -30,7 +30,7 @@ export default function VoyageTracker() {
   const [showNewVoyageModal, setShowNewVoyageModal] = useState(false);
   const [showImportCountersModal, setShowImportCountersModal] = useState(false);
   const [pendingNewCruise, setPendingNewCruise] = useState(null);
-  const [pendingVoyageDetails, setPendingVoyageDetails] = useState(null);
+  const [, setPendingVoyageDetails] = useState(null);
   const [saveStatus, setSaveStatus] = useState('idle');
   const [directoryHandle, setDirectoryHandle] = useState(null);
   const [allLegsCollapsed, setAllLegsCollapsed] = useState(false);
@@ -64,7 +64,7 @@ export default function VoyageTracker() {
       }
     };
     checkRecovery();
-  }, []);
+  }, [directoryHandle]);
 
   const loadVoyagesFromDirectory = async () => {
     try {
@@ -267,7 +267,7 @@ export default function VoyageTracker() {
                        || lastLeg.arrival.phases[lastLeg.arrival.phases.length - 1];
       if (lastPhase?.equipment && newLeg.departure.phases[0]) {
         Object.keys(newLeg.departure.phases[0].equipment).forEach(key => {
-          if (lastPhase.equipment[key]?.end) {
+          if (lastPhase.equipment[key]?.end != null && lastPhase.equipment[key]?.end !== '') {
             newLeg.departure.phases[0].equipment[key].start = lastPhase.equipment[key].end;
           }
         });
@@ -347,7 +347,7 @@ export default function VoyageTracker() {
       const newPhases = rep.phases.map((phase, pi) => {
         if (pi !== phaseIndex) return phase;
         const newEq = { ...phase.equipment };
-        Object.entries(counters).forEach(([k, v]) => { if (v && newEq[k]) newEq[k] = { ...newEq[k], start: v }; });
+        Object.entries(counters).forEach(([k, v]) => { if ((v !== '' && v != null) && newEq[k]) newEq[k] = { ...newEq[k], start: v }; });
         return { ...phase, equipment: newEq };
       });
       return reportType === 'departure' ? { ...leg, departure: { ...rep, phases: newPhases } } : { ...leg, arrival: { ...rep, phases: newPhases } };
@@ -360,8 +360,8 @@ export default function VoyageTracker() {
   };
 
   const trackPhaseEnd = (legIdx, repType, phaseIdx, phaseName, equipment) => {
-    const ends = { dg12: equipment.dg12?.end || '', dg4: equipment.dg4?.end || '', dg3: equipment.dg3?.end || '', boiler1: equipment.boiler1?.end || '', boiler2: equipment.boiler2?.end || '' };
-    const hasAnyEnd = Object.values(ends).some(v => v && v !== '');
+    const ends = { dg12: equipment.dg12?.end ?? '', dg4: equipment.dg4?.end ?? '', dg3: equipment.dg3?.end ?? '', boiler1: equipment.boiler1?.end ?? '', boiler2: equipment.boiler2?.end ?? '' };
+    const hasAnyEnd = Object.values(ends).some(v => v !== '' && v != null);
     if (hasAnyEnd) {
       setLastEditedPhase({ legIndex: legIdx, reportType: repType, phaseIndex: phaseIdx, phaseName: phaseName || 'Phase', equipment: ends });
     }

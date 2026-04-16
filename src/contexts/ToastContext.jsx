@@ -1,6 +1,6 @@
 import { createContext, useState, useCallback } from 'react';
 
-export const ToastContext = createContext();
+export const ToastContext = createContext(); // eslint-disable-line react-refresh/only-export-components
 
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);

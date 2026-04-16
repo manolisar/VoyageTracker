@@ -46,7 +46,7 @@ const Header = ({ saveStatus, directoryHandle, view, activeCruise, onSave, onSho
                 <button
                   onClick={onSave}
                   className="p-2.5 bg-ocean-500 hover:bg-ocean-600 text-white rounded-xl transition-colors shadow-lg shadow-ocean-500/25"
-                  title="Save Now (Ctrl+S)"
+                  aria-label="Save Now (Ctrl+S)"
                 >
                   <Icons.Save />
                 </button>
@@ -54,7 +54,7 @@ const Header = ({ saveStatus, directoryHandle, view, activeCruise, onSave, onSho
                   onClick={onShowSettings}
                   className="p-2.5 bg-navy-100 dark:bg-navy-700 hover:bg-navy-200 dark:hover:bg-navy-600
                              text-navy-600 dark:text-navy-200 rounded-xl transition-colors"
-                  title="Density Settings"
+                  aria-label="Density Settings"
                 >
                   <Icons.Settings />
                 </button>

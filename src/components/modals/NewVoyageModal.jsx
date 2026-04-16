@@ -8,7 +8,7 @@ const NewVoyageModal = ({ isOpen, onClose, onCreate }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setStartDate(new Date().toISOString().split('T')[0]);
+      setStartDate(new Date().toISOString().split('T')[0]); // eslint-disable-line react-hooks/set-state-in-effect -- reset on open
       setFromPort('');
       setToPort('');
     }

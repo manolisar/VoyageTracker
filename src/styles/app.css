@@ -95,6 +95,15 @@
   }
 }
 
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Base font */
 * { font-family: 'Manrope', sans-serif; }
 h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Manrope', sans-serif; }
